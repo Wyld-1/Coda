@@ -1,0 +1,1004 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		235266792F350B010071AD79 /* Coda Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 235266782F350B010071AD79 /* Coda Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		235266632F350B010071AD79 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2352664D2F350AFE0071AD79 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 235266542F350AFE0071AD79;
+			remoteInfo = Coda;
+		};
+		2352666D2F350B010071AD79 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2352664D2F350AFE0071AD79 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 235266542F350AFE0071AD79;
+			remoteInfo = Coda;
+		};
+		2352667A2F350B010071AD79 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2352664D2F350AFE0071AD79 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 235266772F350B010071AD79;
+			remoteInfo = "Coda Watch App";
+		};
+		235266882F350B020071AD79 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2352664D2F350AFE0071AD79 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 235266772F350B010071AD79;
+			remoteInfo = "Coda Watch App";
+		};
+		235266922F350B020071AD79 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2352664D2F350AFE0071AD79 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 235266772F350B010071AD79;
+			remoteInfo = "Coda Watch App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2352669E2F350B020071AD79 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				235266792F350B010071AD79 /* Coda Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		235266552F350AFE0071AD79 /* Coda.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Coda.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		235266622F350B010071AD79 /* CodaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2352666C2F350B010071AD79 /* CodaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		235266782F350B010071AD79 /* Coda Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Coda Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		235266872F350B020071AD79 /* Coda Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Coda Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		235266912F350B020071AD79 /* Coda Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Coda Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		235266572F350AFE0071AD79 /* Coda */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Coda;
+			sourceTree = "<group>";
+		};
+		235266652F350B010071AD79 /* CodaTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = CodaTests;
+			sourceTree = "<group>";
+		};
+		2352666F2F350B010071AD79 /* CodaUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = CodaUITests;
+			sourceTree = "<group>";
+		};
+		2352667C2F350B010071AD79 /* Coda Watch App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Coda Watch App";
+			sourceTree = "<group>";
+		};
+		2352668A2F350B020071AD79 /* Coda Watch AppTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Coda Watch AppTests";
+			sourceTree = "<group>";
+		};
+		235266942F350B020071AD79 /* Coda Watch AppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Coda Watch AppUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		235266522F350AFE0071AD79 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2352665F2F350B010071AD79 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		235266692F350B010071AD79 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		235266752F350B010071AD79 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		235266842F350B020071AD79 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2352668E2F350B020071AD79 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2352664C2F350AFE0071AD79 = {
+			isa = PBXGroup;
+			children = (
+				235266572F350AFE0071AD79 /* Coda */,
+				235266652F350B010071AD79 /* CodaTests */,
+				2352666F2F350B010071AD79 /* CodaUITests */,
+				2352667C2F350B010071AD79 /* Coda Watch App */,
+				2352668A2F350B020071AD79 /* Coda Watch AppTests */,
+				235266942F350B020071AD79 /* Coda Watch AppUITests */,
+				235266562F350AFE0071AD79 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		235266562F350AFE0071AD79 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				235266552F350AFE0071AD79 /* Coda.app */,
+				235266622F350B010071AD79 /* CodaTests.xctest */,
+				2352666C2F350B010071AD79 /* CodaUITests.xctest */,
+				235266782F350B010071AD79 /* Coda Watch App.app */,
+				235266872F350B020071AD79 /* Coda Watch AppTests.xctest */,
+				235266912F350B020071AD79 /* Coda Watch AppUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		235266542F350AFE0071AD79 /* Coda */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2352669F2F350B020071AD79 /* Build configuration list for PBXNativeTarget "Coda" */;
+			buildPhases = (
+				235266512F350AFE0071AD79 /* Sources */,
+				235266522F350AFE0071AD79 /* Frameworks */,
+				235266532F350AFE0071AD79 /* Resources */,
+				2352669E2F350B020071AD79 /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2352667B2F350B010071AD79 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				235266572F350AFE0071AD79 /* Coda */,
+			);
+			name = Coda;
+			packageProductDependencies = (
+			);
+			productName = Coda;
+			productReference = 235266552F350AFE0071AD79 /* Coda.app */;
+			productType = "com.apple.product-type.application";
+		};
+		235266612F350B010071AD79 /* CodaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 235266A22F350B020071AD79 /* Build configuration list for PBXNativeTarget "CodaTests" */;
+			buildPhases = (
+				2352665E2F350B010071AD79 /* Sources */,
+				2352665F2F350B010071AD79 /* Frameworks */,
+				235266602F350B010071AD79 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				235266642F350B010071AD79 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				235266652F350B010071AD79 /* CodaTests */,
+			);
+			name = CodaTests;
+			packageProductDependencies = (
+			);
+			productName = CodaTests;
+			productReference = 235266622F350B010071AD79 /* CodaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		2352666B2F350B010071AD79 /* CodaUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 235266A52F350B020071AD79 /* Build configuration list for PBXNativeTarget "CodaUITests" */;
+			buildPhases = (
+				235266682F350B010071AD79 /* Sources */,
+				235266692F350B010071AD79 /* Frameworks */,
+				2352666A2F350B010071AD79 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2352666E2F350B010071AD79 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				2352666F2F350B010071AD79 /* CodaUITests */,
+			);
+			name = CodaUITests;
+			packageProductDependencies = (
+			);
+			productName = CodaUITests;
+			productReference = 2352666C2F350B010071AD79 /* CodaUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		235266772F350B010071AD79 /* Coda Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2352669B2F350B020071AD79 /* Build configuration list for PBXNativeTarget "Coda Watch App" */;
+			buildPhases = (
+				235266742F350B010071AD79 /* Sources */,
+				235266752F350B010071AD79 /* Frameworks */,
+				235266762F350B010071AD79 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				2352667C2F350B010071AD79 /* Coda Watch App */,
+			);
+			name = "Coda Watch App";
+			packageProductDependencies = (
+			);
+			productName = "Coda Watch App";
+			productReference = 235266782F350B010071AD79 /* Coda Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
+		235266862F350B020071AD79 /* Coda Watch AppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 235266A82F350B020071AD79 /* Build configuration list for PBXNativeTarget "Coda Watch AppTests" */;
+			buildPhases = (
+				235266832F350B020071AD79 /* Sources */,
+				235266842F350B020071AD79 /* Frameworks */,
+				235266852F350B020071AD79 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				235266892F350B020071AD79 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				2352668A2F350B020071AD79 /* Coda Watch AppTests */,
+			);
+			name = "Coda Watch AppTests";
+			packageProductDependencies = (
+			);
+			productName = "Coda Watch AppTests";
+			productReference = 235266872F350B020071AD79 /* Coda Watch AppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		235266902F350B020071AD79 /* Coda Watch AppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 235266AB2F350B020071AD79 /* Build configuration list for PBXNativeTarget "Coda Watch AppUITests" */;
+			buildPhases = (
+				2352668D2F350B020071AD79 /* Sources */,
+				2352668E2F350B020071AD79 /* Frameworks */,
+				2352668F2F350B020071AD79 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				235266932F350B020071AD79 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				235266942F350B020071AD79 /* Coda Watch AppUITests */,
+			);
+			name = "Coda Watch AppUITests";
+			packageProductDependencies = (
+			);
+			productName = "Coda Watch AppUITests";
+			productReference = 235266912F350B020071AD79 /* Coda Watch AppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2352664D2F350AFE0071AD79 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2620;
+				LastUpgradeCheck = 2620;
+				TargetAttributes = {
+					235266542F350AFE0071AD79 = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					235266612F350B010071AD79 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 235266542F350AFE0071AD79;
+					};
+					2352666B2F350B010071AD79 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 235266542F350AFE0071AD79;
+					};
+					235266772F350B010071AD79 = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					235266862F350B020071AD79 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 235266772F350B010071AD79;
+					};
+					235266902F350B020071AD79 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 235266772F350B010071AD79;
+					};
+				};
+			};
+			buildConfigurationList = 235266502F350AFE0071AD79 /* Build configuration list for PBXProject "Coda" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 2352664C2F350AFE0071AD79;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 235266562F350AFE0071AD79 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				235266542F350AFE0071AD79 /* Coda */,
+				235266612F350B010071AD79 /* CodaTests */,
+				2352666B2F350B010071AD79 /* CodaUITests */,
+				235266772F350B010071AD79 /* Coda Watch App */,
+				235266862F350B020071AD79 /* Coda Watch AppTests */,
+				235266902F350B020071AD79 /* Coda Watch AppUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		235266532F350AFE0071AD79 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		235266602F350B010071AD79 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2352666A2F350B010071AD79 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		235266762F350B010071AD79 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		235266852F350B020071AD79 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2352668F2F350B020071AD79 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		235266512F350AFE0071AD79 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2352665E2F350B010071AD79 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		235266682F350B010071AD79 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		235266742F350B010071AD79 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		235266832F350B020071AD79 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2352668D2F350B020071AD79 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		235266642F350B010071AD79 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 235266542F350AFE0071AD79 /* Coda */;
+			targetProxy = 235266632F350B010071AD79 /* PBXContainerItemProxy */;
+		};
+		2352666E2F350B010071AD79 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 235266542F350AFE0071AD79 /* Coda */;
+			targetProxy = 2352666D2F350B010071AD79 /* PBXContainerItemProxy */;
+		};
+		2352667B2F350B010071AD79 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 235266772F350B010071AD79 /* Coda Watch App */;
+			targetProxy = 2352667A2F350B010071AD79 /* PBXContainerItemProxy */;
+		};
+		235266892F350B020071AD79 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 235266772F350B010071AD79 /* Coda Watch App */;
+			targetProxy = 235266882F350B020071AD79 /* PBXContainerItemProxy */;
+		};
+		235266932F350B020071AD79 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 235266772F350B010071AD79 /* Coda Watch App */;
+			targetProxy = 235266922F350B020071AD79 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		235266992F350B020071AD79 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = PQW4KRLW78;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		2352669A2F350B020071AD79 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = PQW4KRLW78;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		2352669C2F350B020071AD79 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PQW4KRLW78;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Coda;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = wildcat.codaplayback.Coda;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = wildcat.codaplayback.Coda.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		2352669D2F350B020071AD79 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PQW4KRLW78;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Coda;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = wildcat.codaplayback.Coda;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = wildcat.codaplayback.Coda.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
+		235266A02F350B020071AD79 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PQW4KRLW78;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Coda;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = wildcat.codaplayback.Coda;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		235266A12F350B020071AD79 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PQW4KRLW78;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Coda;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = wildcat.codaplayback.Coda;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		235266A32F350B020071AD79 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PQW4KRLW78;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = wildcat.codaplayback.CodaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Coda.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Coda";
+			};
+			name = Debug;
+		};
+		235266A42F350B020071AD79 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PQW4KRLW78;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = wildcat.codaplayback.CodaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Coda.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Coda";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		235266A62F350B020071AD79 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PQW4KRLW78;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = wildcat.codaplayback.CodaUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Coda;
+			};
+			name = Debug;
+		};
+		235266A72F350B020071AD79 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PQW4KRLW78;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = wildcat.codaplayback.CodaUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Coda;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		235266A92F350B020071AD79 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PQW4KRLW78;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "wildcat.codaplayback.Coda-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Coda Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Coda Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		235266AA2F350B020071AD79 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PQW4KRLW78;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "wildcat.codaplayback.Coda-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Coda Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Coda Watch App";
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
+		235266AC2F350B020071AD79 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PQW4KRLW78;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "wildcat.codaplayback.Coda-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "Coda Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		235266AD2F350B020071AD79 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PQW4KRLW78;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "wildcat.codaplayback.Coda-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "Coda Watch App";
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		235266502F350AFE0071AD79 /* Build configuration list for PBXProject "Coda" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				235266992F350B020071AD79 /* Debug */,
+				2352669A2F350B020071AD79 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2352669B2F350B020071AD79 /* Build configuration list for PBXNativeTarget "Coda Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2352669C2F350B020071AD79 /* Debug */,
+				2352669D2F350B020071AD79 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2352669F2F350B020071AD79 /* Build configuration list for PBXNativeTarget "Coda" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				235266A02F350B020071AD79 /* Debug */,
+				235266A12F350B020071AD79 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		235266A22F350B020071AD79 /* Build configuration list for PBXNativeTarget "CodaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				235266A32F350B020071AD79 /* Debug */,
+				235266A42F350B020071AD79 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		235266A52F350B020071AD79 /* Build configuration list for PBXNativeTarget "CodaUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				235266A62F350B020071AD79 /* Debug */,
+				235266A72F350B020071AD79 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		235266A82F350B020071AD79 /* Build configuration list for PBXNativeTarget "Coda Watch AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				235266A92F350B020071AD79 /* Debug */,
+				235266AA2F350B020071AD79 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		235266AB2F350B020071AD79 /* Build configuration list for PBXNativeTarget "Coda Watch AppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				235266AC2F350B020071AD79 /* Debug */,
+				235266AD2F350B020071AD79 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2352664D2F350AFE0071AD79 /* Project object */;
+}
