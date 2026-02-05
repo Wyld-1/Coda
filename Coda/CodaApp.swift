@@ -2,13 +2,19 @@
 //  CodaApp.swift
 //  Coda
 //
-//  Created by Liam Lefohn on 2/5/26.
+//  iOS companion app
 //
 
 import SwiftUI
 
 @main
 struct CodaApp: App {
+    init() {
+        // Initialize Watch Connectivity
+        _ = WatchConnectivityManager.shared
+        print("📱 iOS app initialized")
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

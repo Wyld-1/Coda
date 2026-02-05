@@ -1,44 +1,37 @@
 //
 //  MediaManager.swift
-//  Flick
+//  Coda Watch App
 //
-//  Created by Liam Lefohn on 1/27/26.
+//  Sends media commands to iPhone
 //
-// Controls media playback
 
 import Foundation
-import MediaPlayer
 import WatchKit
 import Combine
 
 class MediaManager: ObservableObject {
-    private let commandCenter = MPRemoteCommandCenter.shared()
+    var objectWillChange = ObservableObjectPublisher()
     
-    init() {
-        // Enable the commands
-        commandCenter.playCommand.isEnabled = true
-        commandCenter.pauseCommand.isEnabled = true
-        commandCenter.togglePlayPauseCommand.isEnabled = true
-        commandCenter.nextTrackCommand.isEnabled = true
-        commandCenter.previousTrackCommand.isEnabled = true
-    }
+    @Published var currentTrack: String = "Ready"
     
     func handleGesture(_ gesture: GestureType) {
+        let command: MediaCommand
+        
         switch gesture {
         case .nextTrack:
-            WKInterfaceDevice.current().play(.success)
-            commandCenter.nextTrackCommand.perform(nil)
-            
+            command = .nextTrack
         case .previousTrack:
-            WKInterfaceDevice.current().play(.success)
-            commandCenter.previousTrackCommand.perform(nil)
-            
+            command = .previousTrack
         case .playPause:
-            WKInterfaceDevice.current().play(.success)
-            commandCenter.togglePlayPauseCommand.perform(nil)
-            
+            command = .playPause
         case .none:
-            break
+            return
         }
+        
+        // Send command to iPhone
+        WatchConnectivityManager.shared.sendMediaCommand(command)
+        
+        // Immediate haptic feedback
+        WKInterfaceDevice.current().play(.success)
     }
 }

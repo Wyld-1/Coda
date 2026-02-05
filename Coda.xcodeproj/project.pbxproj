@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		235266792F350B010071AD79 /* Coda Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 235266782F350B010071AD79 /* Coda Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		235266C62F3517110071AD79 /* SharedTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235266C52F3517060071AD79 /* SharedTypes.swift */; };
+		235266CA2F35195D0071AD79 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235266C92F35188E0071AD79 /* WatchConnectivityManager.swift */; };
+		235266CB2F35195D0071AD79 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235266C92F35188E0071AD79 /* WatchConnectivityManager.swift */; };
+		235266CC2F35196A0071AD79 /* SharedTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235266C52F3517060071AD79 /* SharedTypes.swift */; };
+		235266CF2F3519A60071AD79 /* iOSMediaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235266CD2F3519A10071AD79 /* iOSMediaManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +74,9 @@
 		235266782F350B010071AD79 /* Coda Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Coda Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		235266872F350B020071AD79 /* Coda Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Coda Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		235266912F350B020071AD79 /* Coda Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Coda Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		235266C52F3517060071AD79 /* SharedTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTypes.swift; sourceTree = "<group>"; };
+		235266C92F35188E0071AD79 /* WatchConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityManager.swift; sourceTree = "<group>"; };
+		235266CD2F3519A10071AD79 /* iOSMediaManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSMediaManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -153,6 +161,7 @@
 		2352664C2F350AFE0071AD79 = {
 			isa = PBXGroup;
 			children = (
+				235266C82F35186C0071AD79 /* CommunicationFramework */,
 				235266572F350AFE0071AD79 /* Coda */,
 				235266652F350B010071AD79 /* CodaTests */,
 				2352666F2F350B010071AD79 /* CodaUITests */,
@@ -174,6 +183,16 @@
 				235266912F350B020071AD79 /* Coda Watch AppUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		235266C82F35186C0071AD79 /* CommunicationFramework */ = {
+			isa = PBXGroup;
+			children = (
+				235266CD2F3519A10071AD79 /* iOSMediaManager.swift */,
+				235266C92F35188E0071AD79 /* WatchConnectivityManager.swift */,
+				235266C52F3517060071AD79 /* SharedTypes.swift */,
+			);
+			path = CommunicationFramework;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -425,6 +444,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				235266C62F3517110071AD79 /* SharedTypes.swift in Sources */,
+				235266CF2F3519A60071AD79 /* iOSMediaManager.swift in Sources */,
+				235266CA2F35195D0071AD79 /* WatchConnectivityManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,6 +468,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				235266CB2F35195D0071AD79 /* WatchConnectivityManager.swift in Sources */,
+				235266CC2F35196A0071AD79 /* SharedTypes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -615,12 +639,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Coda Watch App/Coda Watch App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = PQW4KRLW78;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Coda-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Coda;
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Coda uses Health capabilites to process gestures";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = wildcat.codaplayback.Coda;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -648,12 +675,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Coda Watch App/Coda Watch App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = PQW4KRLW78;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Coda-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Coda;
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Coda uses Health capabilites to process gestures";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = wildcat.codaplayback.Coda;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -682,17 +712,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Coda/Coda.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = PQW4KRLW78;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Coda;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -717,17 +749,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Coda/Coda.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = PQW4KRLW78;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Coda;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

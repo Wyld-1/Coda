@@ -10,7 +10,7 @@ import WatchConnectivity
 import Combine
 
 class WatchConnectivityManager: NSObject, ObservableObject {
-    var objectWillChange: ObservableObjectPublisher
+    var objectWillChange = ObservableObjectPublisher()
     
     static let shared = WatchConnectivityManager()
     

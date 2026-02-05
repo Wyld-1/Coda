@@ -11,6 +11,11 @@ import SwiftUI
 @main
 struct Flick_Watch_AppApp: App {
     @StateObject private var appState = AppStateManager()
+        
+    init() {
+        // Initialize Watch Connectivity
+        _ = WatchConnectivityManager.shared
+    }
     
     var body: some Scene {
         WindowGroup {
