@@ -16,6 +16,10 @@ class WatchConnectivityManager: NSObject, ObservableObject {
     
     @Published var isReachable = false
     
+    // Command queue for retry mechanism
+    private var commandQueue: [MediaCommand] = []
+    private var retryTimer: Timer?
+    
     private override init() {
         super.init()
         
@@ -30,23 +34,59 @@ class WatchConnectivityManager: NSObject, ObservableObject {
     func sendMediaCommand(_ command: MediaCommand) {
         guard WCSession.default.activationState == .activated else {
             print("❌ WCSession not activated")
-            return
-        }
-        
-        guard WCSession.default.isReachable else {
-            print("❌ iPhone not reachable")
+            queueCommand(command)
             return
         }
         
         let message = ["command": command.rawValue]
         
-        WCSession.default.sendMessage(message, replyHandler: { reply in
-            print("✅ Command sent: \(command.rawValue)")
-        }, errorHandler: { error in
-            print("❌ Error sending command: \(error.localizedDescription)")
-        })
+        if WCSession.default.isReachable {
+            WCSession.default.sendMessage(message, replyHandler: { reply in
+                print("✅ Command sent: \(command.rawValue)")
+                self.clearRetryTimer()
+            }, errorHandler: { error in
+                print("❌ Error sending command: \(error.localizedDescription)")
+                self.queueCommand(command)
+            })
+        } else {
+            print("❌ iPhone not reachable, queuing command")
+            queueCommand(command)
+        }
     }
     
+    // MARK: - Command Queue & Retry
+    private func queueCommand(_ command: MediaCommand) {
+        commandQueue.append(command)
+        startRetryTimer()
+    }
+    
+    private func startRetryTimer() {
+        guard retryTimer == nil else { return }
+        
+        retryTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
+            self?.retryQueuedCommands()
+        }
+    }
+    
+    private func retryQueuedCommands() {
+        guard !commandQueue.isEmpty, WCSession.default.isReachable else { return }
+        
+        // Send all queued commands
+        let commands = commandQueue
+        commandQueue.removeAll()
+        
+        for command in commands {
+            sendMediaCommand(command)
+        }
+    }
+    
+    private func clearRetryTimer() {
+        retryTimer?.invalidate()
+        retryTimer = nil
+        commandQueue.removeAll()
+    }
+    
+    // MARK: - Settings Sync
     func syncSettings(_ settings: AppSettings) {
         guard WCSession.default.activationState == .activated else { return }
         
@@ -75,14 +115,24 @@ extension WatchConnectivityManager: WCSessionDelegate {
         DispatchQueue.main.async {
             self.isReachable = session.isReachable
             print("📱 Reachability changed: \(session.isReachable)")
+            
+            // Try to send queued commands when connection restored
+            if session.isReachable {
+                self.retryQueuedCommands()
+            }
         }
     }
     
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
         if let data = applicationContext["settings"] as? Data,
            let settings = try? JSONDecoder().decode(AppSettings.self, from: data) {
-            // Save received settings
             SharedSettings.save(settings)
+            
+            // Notify iOS app to refresh
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: NSNotification.Name("SettingsDidUpdate"), object: nil)
+            }
+            
             print("✅ Settings received and saved")
         }
     }

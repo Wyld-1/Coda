@@ -115,6 +115,7 @@ struct TutorialView: View {
     }
     
     private func advanceStep() {
+        WKInterfaceDevice.current().play(.click)
         if currentStep < tutorialSteps.count - 1 {
             withAnimation {
                 showMediaIcon = false

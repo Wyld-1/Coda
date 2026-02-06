@@ -26,10 +26,8 @@ class iOSMediaManager: ObservableObject {
         switch command {
         case .nextTrack:
             player.skipToNextItem()
-            
         case .previousTrack:
             player.skipToPreviousItem()
-            
         case .playPause:
             if player.playbackState == .playing {
                 player.pause()
@@ -37,5 +35,11 @@ class iOSMediaManager: ObservableObject {
                 player.play()
             }
         }
+        
+        // Notify UI
+        NotificationCenter.default.post(
+            name: NSNotification.Name("CommandReceived"),
+            object: command
+        )
     }
 }

@@ -1,6 +1,6 @@
 //
 //  MediaManager.swift
-//  Coda Watch App
+//  Flick Watch App
 //
 //  Sends media commands to iPhone
 //
@@ -28,10 +28,18 @@ class MediaManager: ObservableObject {
             return
         }
         
+        // Check connectivity before sending
+        guard WatchConnectivityManager.shared.isReachable else {
+            // Not connected - play failure haptic
+            WKInterfaceDevice.current().play(.failure)
+            print("⌚️ Cannot send command - iPhone not reachable")
+            return
+        }
+        
         // Send command to iPhone
         WatchConnectivityManager.shared.sendMediaCommand(command)
         
-        // Immediate haptic feedback
+        // Success haptic
         WKInterfaceDevice.current().play(.success)
     }
 }

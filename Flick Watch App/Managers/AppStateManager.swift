@@ -19,28 +19,30 @@ class AppStateManager: ObservableObject {
     @Published var currentState: AppState
     @Published var isLeftWrist: Bool = true
     @Published var isTapEnabled: Bool {
-            didSet {
-                UserDefaults.standard.set(isTapEnabled, forKey: "isTapEnabled")
-            }
-        }
+        didSet { syncSettings() }
+    }
     @Published var isFlickDirectionReversed: Bool {
-        didSet {
-            UserDefaults.standard.set(isFlickDirectionReversed, forKey: "isFlickDirectionReversed")
-        }
+        didSet { syncSettings() }
     }
     
     init() {
-        // Check wrist orientation
         let wristLocation = WKInterfaceDevice.current().wristLocation
         self.isLeftWrist = (wristLocation == .left)
         
-        // Load saved settings
-        self.isTapEnabled = UserDefaults.standard.bool(forKey: "isTapEnabled")
-        self.isFlickDirectionReversed = UserDefaults.standard.bool(forKey: "isFlickDirectionReversed")
+        // Load from shared storage
+        let settings = SharedSettings.load()
+        self.isTapEnabled = settings.isTapEnabled
+        self.isFlickDirectionReversed = settings.isFlickDirectionReversed
         
-        // Check if first launch
         let hasCompletedWelcome = UserDefaults.standard.bool(forKey: "hasCompletedWelcome")
         self.currentState = hasCompletedWelcome ? .main : .welcome
+    }
+    
+    private func syncSettings() {
+        var settings = SharedSettings.load()
+        settings.isTapEnabled = self.isTapEnabled
+        settings.isFlickDirectionReversed = self.isFlickDirectionReversed
+        SharedSettings.save(settings)
     }
     
     func completeWelcome() {

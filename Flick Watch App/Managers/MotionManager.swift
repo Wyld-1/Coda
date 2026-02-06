@@ -1,8 +1,8 @@
 //
-//  MotionManager.swift
-//  Flick
+// MotionManager.swift
+// Flick
 //
-//  Created by Liam Lefohn on 1/27/26.
+// Created by Liam Lefohn on 1/27/26.
 //
 // Reads sensors, detects gestures - runs as workout session for background execution
 
@@ -10,6 +10,7 @@ import Foundation
 import CoreMotion
 import Combine
 import HealthKit
+import WatchKit
 
 // Gesture types the app can detect
 enum GestureType {
@@ -34,7 +35,7 @@ class MotionManager: NSObject, ObservableObject {
     
     // Tunable thresholds
     private let TWIST_THRESHOLD: Double = 2.5               // rad/s
-    private let UPSIDE_DOWN_THRESHOLD: Double = 0.7         // Gravity force ratio, -1.0 < n < 1.0 —— -1.0 DOWN, 1.0 UP, 0 HORIZONTAL
+    private let UPSIDE_DOWN_THRESHOLD: Double = 0.7         // Gravity force ratio
     private let UPSIDE_DOWN_HOLD_TIME: TimeInterval = 1.5   // Seconds
     private let GESTURE_COOLDOWN: TimeInterval = 0.8        // Seconds
     
@@ -42,7 +43,11 @@ class MotionManager: NSObject, ObservableObject {
     
     override init() {
         super.init()
-        //requestHealthKitAuthorization()
+        // Authorization requested from WelcomeView
+    }
+    
+    deinit {
+        endWorkoutSession()
     }
     
     func requestHealthKitAuthorization(completion: @escaping (Bool) -> Void) {
@@ -52,15 +57,13 @@ class MotionManager: NSObject, ObservableObject {
             if let error = error {
                 print("HealthKit authorization error: \(error.localizedDescription)")
                 completion(false)
-            }
-            else {
+            } else {
                 completion(success)
             }
         }
     }
     
     func startMonitoring() {
-        // Start workout session for background execution
         startWorkoutSession()
         
         guard motion.isDeviceMotionAvailable else {
@@ -80,9 +83,22 @@ class MotionManager: NSObject, ObservableObject {
         endWorkoutSession()
     }
     
+    func pauseMonitoring() {
+        motion.stopDeviceMotionUpdates()
+        // Keep workout session alive but stop motion updates to save battery
+    }
+    
+    func resumeMonitoring() {
+        guard motion.isDeviceMotionAvailable else { return }
+        motion.startDeviceMotionUpdates(to: .main) { [weak self] data, error in
+            guard let self = self, let data = data else { return }
+            self.processMotion(data)
+        }
+    }
+    
     private func startWorkoutSession() {
         let configuration = HKWorkoutConfiguration()
-        configuration.activityType = .other  // Generic activity type
+        configuration.activityType = .other
         configuration.locationType = .unknown
         
         do {
@@ -90,7 +106,10 @@ class MotionManager: NSObject, ObservableObject {
             workoutBuilder = workoutSession?.associatedWorkoutBuilder()
             
             workoutSession?.delegate = self
-            workoutBuilder?.dataSource = HKLiveWorkoutDataSource(healthStore: healthStore, workoutConfiguration: configuration)
+            workoutBuilder?.dataSource = HKLiveWorkoutDataSource(
+                healthStore: healthStore,
+                workoutConfiguration: configuration
+            )
             
             workoutSession?.startActivity(with: Date())
             workoutBuilder?.beginCollection(withStart: Date()) { success, error in
@@ -127,7 +146,6 @@ class MotionManager: NSObject, ObservableObject {
         let rotationRate = data.rotationRate.z
         
         if abs(rotationRate) > TWIST_THRESHOLD {
-            // Determine if we should reverse based on wrist AND user preference
             let shouldReverse = (isLeftWrist != (appState?.isFlickDirectionReversed ?? false))
             
             if shouldReverse {
@@ -166,6 +184,9 @@ class MotionManager: NSObject, ObservableObject {
         lastGesture = gesture
         lastGestureTime = Date()
         
+        // Immediate haptic when gesture detected
+        WKInterfaceDevice.current().play(.click)
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             self?.lastGesture = .none
         }
@@ -174,7 +195,12 @@ class MotionManager: NSObject, ObservableObject {
 
 // MARK: - HKWorkoutSessionDelegate
 extension MotionManager: HKWorkoutSessionDelegate {
-    func workoutSession(_ workoutSession: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
+    func workoutSession(
+        _ workoutSession: HKWorkoutSession,
+        didChangeTo toState: HKWorkoutSessionState,
+        from fromState: HKWorkoutSessionState,
+        date: Date
+    ) {
         // Handle state changes if needed
     }
     

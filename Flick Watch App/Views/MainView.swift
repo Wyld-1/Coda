@@ -35,7 +35,7 @@ struct MainView: View {
                             .fontWeight(.black)
                             .symbolEffect(.bounce, value: lastGesture)
                     } else {
-                        Text("Coda")
+                        Text("Flick")
                             .foregroundColor(Color(red: 96/255,
                                                         green: 0/255,
                                                         blue: 247/255))
@@ -47,6 +47,7 @@ struct MainView: View {
                 .contentShape(Rectangle())
                 .onTapGesture {
                     if appState.isTapEnabled {
+                        WKInterfaceDevice.current().play(.click)
                         mediaManager.handleGesture(.playPause)
                         withAnimation {
                             lastGesture = .playPause
