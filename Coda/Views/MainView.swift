@@ -19,7 +19,9 @@ struct MainView: View {
             // Settings button
             VStack {
                 HStack {
-                    Button(action: { showSettings = true }) {
+                    Button(action: {
+                        showSettings = true
+                    }) {
                         Image(systemName: "gearshape.fill")
                             .font(.system(size: 22, weight: .bold))
                             .foregroundStyle(.gray)
@@ -39,7 +41,7 @@ struct MainView: View {
             VStack(spacing: 30) {
                 ZStack {
                     Image(systemName: "circle")
-                        .font(.system(size: 300))
+                        .font(.system(size: 290))
                         .symbolEffect(.breathe.plain.wholeSymbol)
                         .foregroundStyle(.orange)
                     

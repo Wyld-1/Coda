@@ -48,7 +48,7 @@ struct SettingsView: View {
                         Text("Version")
                         Spacer()
                         Text("1.0")
-                            .foregroundStyle(.white)
+                            .foregroundStyle(.secondary)
                     }
                     
                     Link(destination: URL(string: "https://github.com/Wyld-1/Coda")!) {

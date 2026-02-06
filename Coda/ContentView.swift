@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var appState = AppStateManager()
     @State private var settings = SharedSettings.load()
 
     var body: some View {
