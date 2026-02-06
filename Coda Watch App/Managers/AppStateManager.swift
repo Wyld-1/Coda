@@ -49,6 +49,9 @@ class AppStateManager: ObservableObject {
     }
     
     func completeTutorial() {
+        var settings = SharedSettings.load()
+        settings.isTutorialCompleted = true
+        SharedSettings.save(settings)
         currentState = .main
     }
      

@@ -58,10 +58,11 @@ struct WelcomeView: View {
         guard !isRequesting else { return }
         isRequesting = true
         triggerPulse.toggle()
-
+        WKInterfaceDevice.current().play(.click)
+        
         // Request HealthKit access. Once done, continue
         tempMotion.requestHealthKitAuthorization { success in
-            WKInterfaceDevice.current().play(.success)
+            WKInterfaceDevice.current().play(.click)
             withAnimation(.spring(duration: 0.5)) {}
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 withAnimation(.easeInOut(duration: 0.6)) {

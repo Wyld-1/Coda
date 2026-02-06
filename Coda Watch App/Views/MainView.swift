@@ -35,7 +35,7 @@ struct MainView: View {
                             .fontWeight(.black)
                             .symbolEffect(.bounce, value: lastGesture)
                     } else {
-                        Text("Flick")
+                        Text("Coda")
                             .foregroundColor(Color(red: 96/255,
                                                         green: 0/255,
                                                         blue: 247/255))
@@ -56,6 +56,7 @@ struct MainView: View {
                 
                 // Button layer on top, and unaffected by screen tap
                 Button(action: {
+                    WKInterfaceDevice.current().play(.click)
                     showSettings = true
                 }) {
                     Image(systemName: "gearshape.fill")

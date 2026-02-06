@@ -46,6 +46,20 @@ class WatchConnectivityManager: NSObject, ObservableObject {
             print("❌ Error sending command: \(error.localizedDescription)")
         })
     }
+    
+    func syncSettings(_ settings: AppSettings) {
+        guard WCSession.default.activationState == .activated else { return }
+        
+        do {
+            let data = try JSONEncoder().encode(settings)
+            let dict = ["settings": data]
+            
+            try WCSession.default.updateApplicationContext(dict)
+            print("✅ Settings synced")
+        } catch {
+            print("❌ Error syncing settings: \(error)")
+        }
+    }
 }
 
 // MARK: - WCSessionDelegate
@@ -61,6 +75,15 @@ extension WatchConnectivityManager: WCSessionDelegate {
         DispatchQueue.main.async {
             self.isReachable = session.isReachable
             print("📱 Reachability changed: \(session.isReachable)")
+        }
+    }
+    
+    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
+        if let data = applicationContext["settings"] as? Data,
+           let settings = try? JSONDecoder().decode(AppSettings.self, from: data) {
+            // Save received settings
+            SharedSettings.save(settings)
+            print("✅ Settings received and saved")
         }
     }
     

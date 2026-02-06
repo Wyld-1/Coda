@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var appState = AppStateManager()
+    @State private var settings = SharedSettings.load()
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        if !settings.isTutorialCompleted {
+            WelcomeView()
+        } else {
+            MainView()
         }
-        .padding()
     }
 }
 

@@ -1,23 +1,25 @@
 //
 //  CodaApp.swift
-//  Coda
-//
-//  iOS companion app
+//  Coda iOS
 //
 
 import SwiftUI
 
 @main
 struct CodaApp: App {
+    @State private var settings = SharedSettings.load()
+    
     init() {
-        // Initialize Watch Connectivity
         _ = WatchConnectivityManager.shared
-        print("📱 iOS app initialized")
     }
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if !settings.isTutorialCompleted {
+                WelcomeView()
+            } else {
+                MainView()
+            }
         }
     }
 }

@@ -53,6 +53,7 @@ struct SettingsView: View {
                 
                 // Restart tutorial button
                 Button(action: {
+                    WKInterfaceDevice.current().play(.click)
                     appState.resetToTutorial()
                 }) {
                     ZStack {
@@ -72,6 +73,7 @@ struct SettingsView: View {
                 
                 // Credits button
                 Button(action: {
+                    WKInterfaceDevice.current().play(.click)
                     showCredits = true
                 }) {
                     ZStack {
