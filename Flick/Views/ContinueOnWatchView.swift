@@ -158,7 +158,6 @@ struct ContinueOnWatchView: View {
 struct GlassStatusDock: View {
     @Binding var showHelp: Bool
     
-    // Accessing the singleton directly
     var isReachable: Bool {
         WatchConnectivityManager.shared.isReachable
     }
@@ -381,7 +380,7 @@ struct DiagnosticCard: View {
                 Spacer()
             }
             
-            Link(destination: URL(string: "bridge://")!) { // Deep link to Watch App
+            Link(destination: URL(string: "x-apple-watchapp://")!) {
                 Text(buttonTitle)
                     .font(.headline)
                     .fontWeight(.bold)

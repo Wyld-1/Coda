@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainView: View {
     @State private var showSettings = false
-    @State private var showHelpSheet = false // 1. Added State
+    @State private var showHelpSheet = false
     @State private var lastCommand: MediaCommand = .playPause
     @State private var commandTimestamp = Date()
     @State private var isAnimatingShadow = false
@@ -27,7 +27,6 @@ struct MainView: View {
             )
             .ignoresSafeArea()
             
-            // Center Brand Element
             VStack(spacing: 30) {
                 ZStack {
                     Image(systemName: "circle")
@@ -49,11 +48,11 @@ struct MainView: View {
             }
             .offset(y: -20)
             
-            // Bottom "Liquid Glass" Control Dock
+            // Bottom control dock
             VStack {
                 Spacer()
                 
-                // 2. Pass the help binding to the dock
+                // Pass the help binding to the dock
                 GlassControlDock(showSettings: $showSettings, showHelp: $showHelpSheet)
                     .padding(.bottom, 40)
             }
@@ -61,7 +60,7 @@ struct MainView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView()
         }
-        // 3. Added the Diagnostics Sheet
+        // Diagnostics sheet
         .sheet(isPresented: $showHelpSheet) {
             WatchConnectionHelpView()
                 .presentationDetents([.medium, .large])
