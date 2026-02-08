@@ -16,6 +16,14 @@ struct MainView: View {
         ZStack {
             Color.black.ignoresSafeArea()
             
+            RadialGradient(
+                gradient: Gradient(colors: [.orange.opacity(0.1), .clear]),
+                center: .center,
+                startRadius: 10,
+                endRadius: 400
+            )
+            .ignoresSafeArea()
+            
             // Settings button
             VStack {
                 HStack {

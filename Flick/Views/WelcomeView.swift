@@ -1,84 +1,79 @@
 //
 //  WelcomeView.swift
-//  Coda
+//  Flick
 //
-//  Created by Liam Lefohn on 2/5/26.
+//  Created by Liam Lefohn on 2/6/26.
 //
 
 import SwiftUI
 
 struct WelcomeView: View {
+    @EnvironmentObject var appState: AppStateManager
+    
     var body: some View {
-        ZStack(alignment: .bottom) {
+        ZStack {
+            // Background
             Color.black.ignoresSafeArea()
             
-            // Play icon and welcome text
-            VStack(spacing: 40) {
+            // Subtle ambient glow to make the orange pop
+            RadialGradient(
+                gradient: Gradient(colors: [.orange.opacity(0.1), .clear]),
+                center: .center,
+                startRadius: 10,
+                endRadius: 400
+            )
+            .ignoresSafeArea()
+            
+            VStack(spacing: 0) {
                 Spacer()
                 
-                Image(systemName: "play")
+                // Play icon
+                Image(systemName: "play") // Switched to .fill for more weight
                     .font(.system(size: 215))
                     .foregroundStyle(.orange)
                     .symbolEffect(.breathe.plain.wholeSymbol, options: .repeat(.continuous))
-                
-                    // Unused setup to make play icon clickable
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        print("Play tapped!")
-                    }
-            
-                Spacer()
-                
-                Text("Welcome to Coda")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundStyle(.white)
+                    .shadow(color: .orange.opacity(0.3), radius: 40)
                 
                 Spacer()
-            }
-            .padding(.bottom, 130) // Matches sheet height to prevent overlap
-            
-            // Instruction card
-            VStack {
-                Spacer() // Pushes the content to the bottom of the screen
                 
-                VStack(spacing: 20) {
-                    Capsule()
-                        .frame(width: 40, height: 5)
-                        .foregroundStyle(.secondary)
-                        .padding(.top, 10)
+                
+                // Text content
+                VStack(spacing: 12) {
+                    Text("Welcome to Flick")
+                        .font(.system(size: 36, weight: .bold, design: .rounded))
+                        .foregroundStyle(.white)
                     
-                    HStack(spacing: 20) {
-                        Image(systemName: "applewatch")
-                            .font(.system(size: 70))
-                            .foregroundStyle(.orange)
-                        
-                        Text("Complete the tutorial on Apple Watch")
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.white)
-                            .multilineTextAlignment(.center)
-                    }
-                    
-                    Spacer()
+                    Text("Buttons just had a bad day.")
+                        .font(.title3)
+                        .foregroundStyle(.gray)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 40)
                 }
-                .frame(maxWidth: .infinity)
-                .frame(height: 160)
-                .background(.ultraThinMaterial)
-                .clipShape(
-                    UnevenRoundedRectangle(
-                        topLeadingRadius: 44, // Modern iPhone screen radius
-                        bottomLeadingRadius: 0,
-                        bottomTrailingRadius: 0,
-                        topTrailingRadius: 44
-                    )
-                )
+                
+                Spacer()
+                
+                // Bright orange Continue button (Matching ShortcutsSetupView)
+                Button(action: {
+                    let generator = UIImpactFeedbackGenerator(style: .medium)
+                    generator.impactOccurred()
+                    withAnimation(.spring()) {
+                        appState.completeWelcome()
+                    }
+                }) {
+                    Text("Continue")
+                        .font(.headline)
+                        .fontWeight(.bold)
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(VividGlassButtonStyle()) // Using the custom style from Shortcuts
+                .padding(.horizontal, 30)
+                .padding(.bottom, 50)
             }
-            .ignoresSafeArea(edges: .bottom)
         }
     }
 }
 
 #Preview {
     WelcomeView()
+        .environmentObject(AppStateManager())
 }

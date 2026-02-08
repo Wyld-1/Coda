@@ -1,29 +1,13 @@
-//  FlickApp.swift (iOS)
-//  Replace @State with @StateObject and observe changes
+//
+//  FlickApp.swift
+//  Flick iOS
+//
 
 import SwiftUI
-import Combine
-
-class AppState: ObservableObject {
-    @Published var settings: AppSettings
-    
-    init() {
-        self.settings = SharedSettings.load()
-        
-        // Listen for settings updates
-        NotificationCenter.default.addObserver(
-            forName: NSNotification.Name("SettingsDidUpdate"),
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            self?.settings = SharedSettings.load()
-        }
-    }
-}
 
 @main
-struct FLickApp: App {
-    @StateObject private var appState = AppState()
+struct FlickApp: App {
+    @StateObject private var appState = AppStateManager()
     
     init() {
         _ = WatchConnectivityManager.shared
@@ -31,15 +15,27 @@ struct FLickApp: App {
     
     var body: some Scene {
         WindowGroup {
-            /*
-            if !appState.settings.isTutorialCompleted {
-                WelcomeView()
-            } else {
-                MainView()
-             }
-             */
-            
-            MainView()
+            ZStack {
+                switch appState.currentState {
+                case .welcome:
+                    WelcomeView()
+                        .transition(.opacity)
+                    
+                case .playbackChoice:
+                    InitialSetupView()
+                        .transition(.move(edge: .trailing))
+                    
+                case .waitingForWatch:
+                    ContinueOnWatchView()
+                        .transition(.move(edge: .trailing))
+                    
+                case .main:
+                    MainView()
+                        .transition(.opacity)
+                }
+            }
+            .animation(.easeInOut(duration: 0.4), value: appState.currentState)
+            .environmentObject(appState)
         }
     }
 }

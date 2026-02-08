@@ -21,6 +21,14 @@ struct TestView: View {
                 .fill(.ultraThinMaterial)
                 .ignoresSafeArea()
             
+            RadialGradient(
+                gradient: Gradient(colors: [.orange.opacity(0.1), .clear]),
+                center: .center,
+                startRadius: 10,
+                endRadius: 400
+            )
+            .ignoresSafeArea()
+            
             VStack(spacing: 20) {
                 // Mode indicator
                 HStack(spacing: 8) {

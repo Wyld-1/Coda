@@ -19,13 +19,15 @@ struct AppSettings: Codable {
     var isTapEnabled: Bool
     var isFlickDirectionReversed: Bool
     var isTutorialCompleted: Bool
-    var useShortcutsForPlayback: Bool  // ← NEW
+    var useShortcutsForPlayback: Bool
+    var hasCompletedInitialSetup: Bool
     
     static let `default` = AppSettings(
         isTapEnabled: false,
         isFlickDirectionReversed: false,
         isTutorialCompleted: false,
-        useShortcutsForPlayback: false  // ← Default to Apple Music API
+        useShortcutsForPlayback: false,
+        hasCompletedInitialSetup: false
     )
 }
 

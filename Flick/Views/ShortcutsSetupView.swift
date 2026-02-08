@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ShortcutsSetupView: View {
+    @EnvironmentObject var appState: AppStateManager
     @Environment(\.dismiss) var dismiss
     @State private var currentStep = 0
     
@@ -67,9 +68,15 @@ struct ShortcutsSetupView: View {
     
     var body: some View {
         ZStack {
-            Rectangle()
-                .fill(.ultraThinMaterial)
-                .ignoresSafeArea()
+            Color.black.ignoresSafeArea()
+            
+            RadialGradient(
+                gradient: Gradient(colors: [.orange.opacity(0.1), .clear]),
+                center: .center,
+                startRadius: 10,
+                endRadius: 400
+            )
+            .ignoresSafeArea()
             
             VStack(spacing: 0) {
                 HStack {
@@ -100,12 +107,17 @@ struct ShortcutsSetupView: View {
                 // Main Action Button
                 VStack {
                     Button(action: {
+                        if isLastStep && appState.currentState != .main {
+                            appState.completePlaybackChoice(useShortcuts: true)
+                        }
+                        
                         handleNextButton()
                     }) {
                         Text(isLastStep ? "Finish Setup" : "Next Step")
                             .font(.headline)
                             .fontWeight(.bold) // Added weight
                             .frame(maxWidth: .infinity)
+                            .foregroundStyle(.black)
                     }
                     .buttonStyle(VividGlassButtonStyle()) // Updated Style
                     .padding(.horizontal, 24)
@@ -189,7 +201,7 @@ struct StepCardView: View {
             }
             .padding(.horizontal, 24)
             
-            // Optional "Launch" Button (Only for Step 1)
+            // Launch button (only for Step 1)
             if let action = step.actionTitle,
                let urlString = step.urlScheme,
                let url = URL(string: urlString) {
