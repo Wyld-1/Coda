@@ -11,9 +11,11 @@ struct MainView: View {
     @State private var showSettings = false
     @State private var lastCommand: MediaCommand = .playPause
     @State private var commandTimestamp = Date()
+    @State private var isAnimatingShadow = false // State for shadow animation
     
     var body: some View {
         ZStack {
+            // Background
             Color.black.ignoresSafeArea()
             
             RadialGradient(
@@ -24,64 +26,38 @@ struct MainView: View {
             )
             .ignoresSafeArea()
             
-            // Settings button
-            VStack {
-                HStack {
-                    Button(action: {
-                        showSettings = true
-                    }) {
-                        Image(systemName: "gearshape.fill")
-                            .font(.system(size: 22, weight: .bold))
-                            .foregroundStyle(.gray)
-                    }
-                    .buttonStyle(.glass)
-                    .clipShape(Circle())
-                    .controlSize(.extraLarge)
-                    .padding(.leading, 20)
-                    .padding(.top, 10)
-                    
-                    Spacer()
-                }
-                Spacer()
-            }
-            
-            // Center circle
+            // Center Brand Element
             VStack(spacing: 30) {
                 ZStack {
                     Image(systemName: "circle")
                         .font(.system(size: 290))
                         .symbolEffect(.breathe.plain.wholeSymbol)
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(.orange.opacity(0.8))
+                        .shadow(
+                            color: .orange.opacity(0.3),
+                            radius: isAnimatingShadow ? 50 : 20
+                        )
                     
                     Text("Flick")
                         .foregroundColor(Color(red: 96/255,
-                                                    green: 0/255,
-                                                    blue: 247/255))
+                                               green: 0/255,
+                                               blue: 247/255))
                         .font(.system(size: 65))
                         .fontWeight(.black)
                 }
             }
+            .offset(y: -20) // Visual center correction
             
-            // Watch Connection Status (Bottom)
+            // Bottom "Liquid Glass" Control Dock
             VStack {
                 Spacer()
-                HStack(spacing: 8) {
-                    Circle()
-                        .fill(WatchConnectivityManager.shared.isReachable ? .green : .red)
-                        .frame(width: 8, height: 8)
-                    
-                    Text(WatchConnectivityManager.shared.isReachable ? "WATCH CONNECTED" : "WATCH DISCONNECTED")
-                        .font(.system(size: 12, weight: .bold, design: .monospaced))
-                        .foregroundStyle(.white)
-                }
-                .padding(.bottom, 20)
+                
+                GlassControlDock(showSettings: $showSettings)
+                    .padding(.bottom, 40)
             }
         }
         .sheet(isPresented: $showSettings) {
             SettingsView()
-                .onAppear {
-                    triggerHaptic()
-                }
         }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("CommandReceived"))) { notification in
             if let command = notification.object as? MediaCommand {
@@ -89,21 +65,69 @@ struct MainView: View {
                 commandTimestamp = Date()
             }
         }
+        .onAppear {
+            // Loop the shadow animation to match the breathing effect
+            withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)) {
+                isAnimatingShadow = true
+            }
+        }
     }
-    private func triggerHaptic() {
-        let generator = UIImpactFeedbackGenerator(style: .medium)
-        generator.impactOccurred()
+}
+
+// MARK: - Subviews
+
+struct GlassControlDock: View {
+    @Binding var showSettings: Bool
+    
+    // Accessing the singleton directly as in your original code
+    var isReachable: Bool {
+        WatchConnectivityManager.shared.isReachable
     }
     
-    private func commandIcon(for command: MediaCommand) -> String {
-        switch command {
-        case .nextTrack:
-            return "forward.fill"
-        case .previousTrack:
-            return "backward.fill"
-        case .playPause:
-            return "playpause.fill"
+    var body: some View {
+        HStack(spacing: 0) {
+            // Status section
+            HStack(spacing: 10) {
+                Circle()
+                    .fill(isReachable ? Color.green : Color.red)
+                    .frame(width: 8, height: 8)
+                    .shadow(color: isReachable ? .green.opacity(0.8) : .red.opacity(0.8), radius: 6)
+                
+                // Pill width expands naturally
+                Text(isReachable ? "WATCH ACTIVE" : "WATCH DISCONNECTED")
+                    .font(.caption)
+                    .fontWeight(.bold)
+                    .fontDesign(.monospaced)
+                    .foregroundStyle(.white.opacity(0.9))
+                    .fixedSize() // Prevents text truncation
+            }
+            .padding(.leading, 24)
+            
+            // Vertical divider
+            Rectangle()
+                .fill(.gray)
+                .frame(width: 2, height: 24)
+                .padding(.horizontal, 10)
+            
+            // Settings button
+            Button(action: {
+                let generator = UIImpactFeedbackGenerator(style: .medium)
+                generator.impactOccurred()
+                showSettings = true
+            }) {
+                Image(systemName: "gearshape.fill")
+                    .font(.system(size: 20))
+                    .foregroundStyle(.white)
+                    .frame(width: 50, height: 50)
+                    .contentShape(Rectangle()) // Makes the whole area tappable
+            }
+            .padding(.trailing, 6)
         }
+        .padding(.vertical, 6)
+        .background(.ultraThinMaterial)
+        .clipShape(Capsule())
+        // Added smooth animation for when the dock changes width
+        .animation(.spring(response: 0.4, dampingFraction: 0.7), value: isReachable)
     }
 }
 

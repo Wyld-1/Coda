@@ -1,6 +1,6 @@
 //
 //  SettingsView.swift
-//  Coda
+//  Flick
 //
 //  Created by Liam Lefohn on 2/5/26.
 //
@@ -11,6 +11,7 @@ struct SettingsView: View {
     #if DEBUG
     @EnvironmentObject var appState: AppStateManager
     #endif
+    
     @Environment(\.dismiss) var dismiss
     @State private var settings = SharedSettings.load()
     @State private var showShortcutsSetup = false
@@ -19,165 +20,155 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
+                // MARK: - Gestures Section
                 Section {
-                    Toggle(isOn: Binding(
-                        get: { settings.isFlickDirectionReversed },
-                        set: { newValue in
-                            let generator = UIImpactFeedbackGenerator(style: .light)
-                            generator.impactOccurred()
-                            settings.isFlickDirectionReversed = newValue
-                            saveSettings()
-                        }
-                    )) {
-                        HStack(spacing: 15) {
-                            Image(systemName: "arrow.left.arrow.right")
-                                .foregroundStyle(.orange)
-                            Text("Reverse flick direction")
-                        }
+                    SettingsRow(
+                        icon: "arrow.left.arrow.right",
+                        color: .orange,
+                        title: "Reverse Flick directions"
+                    ) {
+                        Toggle("", isOn: $settings.isFlickDirectionReversed)
+                            .labelsHidden()
+                            .tint(.orange)
                     }
-                    .tint(.orange)
                     
-                    Toggle(isOn: Binding(
-                        get: { settings.isTapEnabled },
-                        set: { newValue in
-                            let generator = UIImpactFeedbackGenerator(style: .light)
-                            generator.impactOccurred()
-                            settings.isTapEnabled = newValue
-                            saveSettings()
-                        }
-                    )) {
-                        HStack(spacing: 15) {
-                            Image(systemName: "hand.tap.fill")
-                                .foregroundStyle(.orange)
-                            Text("Tap Watch to play/pause")
-                        }
+                    SettingsRow(
+                        icon: "hand.tap.fill",
+                        color: .orange,
+                        title: "Tap Watch to Play/Pause"
+                    ) {
+                        Toggle("", isOn: $settings.isTapEnabled)
+                            .labelsHidden()
+                            .tint(.orange)
                     }
-                    .tint(.orange)
                 } header: {
-                    Text("Gesture Controls")
+                    Text("Gestures")
                 }
                 
+                // MARK: - Playback Method Section
                 Section {
-                    Toggle(isOn: Binding(
-                        get: { settings.useShortcutsForPlayback },
-                        set: { newValue in
-                            let generator = UIImpactFeedbackGenerator(style: .medium)
-                            generator.impactOccurred()
-                            settings.useShortcutsForPlayback = newValue
-                            saveSettings()
-                        }
-                    )) {
-                        HStack(spacing: 15) {
-                            Image(systemName: "music.note")
-                                .foregroundStyle(.white)
-                            Text("Shortcuts Playback Mode")
-                                .foregroundStyle(.white)
-                        }
-                    
+                    SettingsRow(
+                        icon: "music.note",
+                        color: .pink,
+                        title: "Use Shortcuts"
+                    ) {
+                        Toggle("", isOn: $settings.useShortcutsForPlayback)
+                            .labelsHidden()
+                            .tint(.pink)
                     }
-                    .tint(.orange)
                     
+                    // Conditional Configuration Rows
                     if settings.useShortcutsForPlayback {
                         Button(action: {
                             triggerHaptic()
                             showShortcutsSetup = true
                         }) {
-                            HStack {
-                                Image(systemName: "book.circle.fill")
-                                    .foregroundStyle(.white)
-                                Text("Configure Shortcuts")
-                                Spacer()
+                            SettingsRow(
+                                icon: "gearshape.fill",
+                                color: .pink,
+                                title: "Configure Shortcuts"
+                            ) {
                                 Image(systemName: "chevron.right")
-                                    .foregroundStyle(.gray)
+                                    .font(.caption)
+                                    .foregroundStyle(.pink)
                             }
-                            .foregroundStyle(.white)
                         }
                         
                         Link(destination: URL(string: "shortcuts://")!) {
-                            HStack {
+                            HStack(spacing: 12) {
                                 Image("Shortcuts Icon")
                                     .resizable()
-                                    .frame(width: 25, height: 25)
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 28, height: 28) // Fixed: Matches SettingsRow size
+                                    .clipShape(RoundedRectangle(cornerRadius: 6)) // Matches SettingsRow radius
+                                
                                 Text("Open Shortcuts App")
                                     .foregroundStyle(.white)
+                                
                                 Spacer()
+                                
                                 Image(systemName: "arrow.up.forward")
-                                    .foregroundStyle(.gray)
+                                    .font(.caption)
+                                    .foregroundStyle(.indigo)
                             }
                         }
                     }
                 } header: {
-                    Text("Playback Method")
+                    Text("Playback Source")
                 } footer: {
                     if settings.useShortcutsForPlayback {
-                        Text("Shortcuts require iPhone to be unlocked. Disable to use Apple Music API.")
+                        Text("Required for Spotify and others. Note: iPhone must be unlocked for shortcuts to run consistently.")
                     } else {
-                        Text("Using Apple Music API. Enable Shortcuts Mode for universal compatibility.")
+                        Text("Uses native Apple Music API. Works while locked, but supports Apple Music only.")
                     }
                 }
                 
+                // MARK: - Community & About
+                Section {
+                    Link(destination: URL(string: "https://forms.gle/RSBVKFks8jatoQLS8")!) {
+                        SettingsRow(
+                            icon: "hammer.fill",
+                            color: .purple,
+                            title: "Build Flick with us"
+                        ) {
+                            Image(systemName: "arrow.up.forward")
+                                .font(.caption)
+                                .foregroundStyle(.purple)
+                        }
+                    }
+                    
+                    HStack {
+                        Text("Version")
+                        Spacer()
+                        Text("1.0 (Build 1)")
+                            .foregroundStyle(.secondary)
+                    }
+                } header: {
+                    Text("Community")
+                }
+                
+                // MARK: - Debug Section (Hidden in Release)
                 #if DEBUG
                 Section {
                     Button(action: {
                         triggerHaptic()
                         showTestControls = true
                     }) {
-                        HStack(spacing: 15) {
-                            Image(systemName: "flask.fill")
+                        SettingsRow(
+                            icon: "flask.fill",
+                            color: .green,
+                            title: "Open Test Controls"
+                        ) {
+                            Image(systemName: "chevron.up")
+                                .font(.caption)
                                 .foregroundStyle(.green)
-                            Text("Open test panel")
-                                .foregroundStyle(.white)
                         }
                     }
                     
                     Button(action: {
+                        triggerHaptic()
+                        // Reset Flow
+                        var newSettings = settings
+                        newSettings.hasCompletedInitialSetup = false
+                        newSettings.isTutorialCompleted = false
+                        SharedSettings.save(newSettings)
                         appState.currentState = .welcome
+                        dismiss()
                     }) {
-                        HStack(spacing: 15) {
-                            Image(systemName: "arrow.counterclockwise.circle.fill")
-                                .foregroundStyle(.green)
-                            Text("Restart")
-                                .foregroundStyle(.white)
+                        SettingsRow(
+                            icon: "arrow.counterclockwise",
+                            color: .red,
+                            title: "Reset to Welcome"
+                        ) {
+                            Image(systemName: "chevron.left.forwardslash.chevron.right")
+                                .font(.caption)
+                                .foregroundStyle(.red)
                         }
                     }
                 } header: {
-                    Text ("Debug Features")
+                    Text("Debug Tools")
                 }
                 #endif
-                
-                Section {
-                    Link(destination: URL(string: "https://github.com/Wyld-1/Coda")!) {
-                        HStack {
-                            Image(systemName: "hammer.circle.fill")
-                                .foregroundStyle(.purple)
-                            Text("Build Coda with us")
-                                .foregroundStyle(.white)
-                        }
-                    }
-                } header: {
-                    Text("Contribute")
-                }
-                
-                Section {
-                    HStack {
-                        Text("Version")
-                        Spacer()
-                        Text("1.0")
-                            .foregroundStyle(.secondary)
-                    }
-                    
-                    Link(destination: URL(string: "https://github.com/Wyld-1/Coda")!) {
-                        HStack {
-                            Text("GitHub")
-                            Spacer()
-                            Image(systemName: "arrow.up.forward")
-                                .foregroundStyle(.secondary)
-                        }
-                        .foregroundStyle(.white)
-                    }
-                } header: {
-                    Text("About")
-                }
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
@@ -188,17 +179,29 @@ struct SettingsView: View {
                         saveAndDismiss()
                     }
                     .foregroundStyle(.orange)
+                    .fontWeight(.bold)
                 }
             }
             .preferredColorScheme(.dark)
+            // Global Change Listener
+            .onChange(of: settings.isFlickDirectionReversed) { _, _ in autoSave() }
+            .onChange(of: settings.isTapEnabled) { _, _ in autoSave() }
+            .onChange(of: settings.useShortcutsForPlayback) { _, _ in autoSave() }
         }
         .sheet(isPresented: $showShortcutsSetup) {
             ShortcutsSetupView()
         }
-        
-        .sheet (isPresented: $showTestControls) {
+        .sheet(isPresented: $showTestControls) {
             TestView()
         }
+    }
+    
+    // MARK: - Helpers
+    
+    private func autoSave() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.impactOccurred()
+        SharedSettings.save(settings)
     }
     
     private func saveAndDismiss() {
@@ -206,13 +209,46 @@ struct SettingsView: View {
         dismiss()
     }
     
-    private func saveSettings() {
-        SharedSettings.save(settings)
-    }
-    
     private func triggerHaptic() {
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
+    }
+}
+
+// MARK: - Helper View Component
+struct SettingsRow<Content: View>: View {
+    let icon: String
+    let color: Color
+    let title: String
+    let content: Content
+    
+    init(icon: String, color: Color, title: String, @ViewBuilder content: () -> Content) {
+        self.icon = icon
+        self.color = color
+        self.title = title
+        self.content = content()
+    }
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            // Apple-style Icon Square
+            ZStack {
+                RoundedRectangle(cornerRadius: 6)
+                    .fill(color)
+                    .frame(width: 28, height: 28)
+                
+                Image(systemName: icon)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(.white)
+            }
+            
+            Text(title)
+                .foregroundStyle(.white)
+            
+            Spacer()
+            
+            content
+        }
     }
 }
 

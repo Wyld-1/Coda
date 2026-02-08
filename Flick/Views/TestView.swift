@@ -21,14 +21,6 @@ struct TestView: View {
                 .fill(.ultraThinMaterial)
                 .ignoresSafeArea()
             
-            RadialGradient(
-                gradient: Gradient(colors: [.orange.opacity(0.1), .clear]),
-                center: .center,
-                startRadius: 10,
-                endRadius: 400
-            )
-            .ignoresSafeArea()
-            
             VStack(spacing: 20) {
                 // Mode indicator
                 HStack(spacing: 8) {
@@ -112,15 +104,6 @@ struct TestView: View {
     private func triggerHaptic() {
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
-    }
-}
-
-struct ScaleButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .scaleEffect(configuration.isPressed ? 0.85 : 1)
-            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
-            .opacity(configuration.isPressed ? 0.7 : 1)
     }
 }
 
