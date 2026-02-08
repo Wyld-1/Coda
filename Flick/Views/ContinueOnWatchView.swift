@@ -32,7 +32,7 @@ struct ContinueOnWatchView: View {
                         Circle()
                             .stroke(Color.orange.opacity(0.3), lineWidth: 6)
                             .frame(width: 120, height: 120)
-                            .scaleEffect(isAnimating ? 2.3 : 1.2)
+                            .scaleEffect(isAnimating ? 2.3 : 1.3)
                             .opacity(isAnimating ? 0 : 0.3)
                             .animation(
                                 .easeOut(duration: 2.3)
@@ -78,29 +78,55 @@ struct ContinueOnWatchView: View {
                 
                 Spacer()
                 
-                /*
-                // Status pill
-                HStack(spacing: 12) {
-                    ProgressView()
-                        .tint(.orange)
-                        .controlSize(.regular)
+                // MARK: - Debug buttons (Only visible in Debug Mode)
+                #if DEBUG
+                Button(action: {
+                    // 1. Force save the setting so it persists
+                    var settings = SharedSettings.load()
+                    settings.isTutorialCompleted = true
+                    SharedSettings.save(settings)
                     
-                    Text("Waiting for completion...")
-                        .font(.body)
-                        .fontWeight(.medium)
-                        .foregroundStyle(.white.opacity(0.8))
-                        .tracking(0.5)
+                    withAnimation {
+                        appState.currentState = .welcome
+                    }
+                }) {
+                    Text("DEBUG: RESTART")
+                        .font(.caption2)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.green)
+                        .padding(.vertical, 8)
+                        .padding(.horizontal, 16)
+                        .background(Color.green.opacity(0.1))
+                        .clipShape(Capsule())
+                        .overlay(
+                            Capsule().stroke(Color.green.opacity(0.3), lineWidth: 1)
+                        )
                 }
-                .padding(.vertical, 14)
-                .padding(.horizontal, 24)
-                .background(.ultraThinMaterial)
-                .clipShape(Capsule())
-                .overlay(
-                    Capsule()
-                        .stroke(.white.opacity(0.1), lineWidth: 1)
-                )
-                .padding(.bottom, 60)
-                 */
+                .padding(.bottom, 20)
+                
+                Button(action: {
+                    // 1. Force save the setting so it persists
+                    var settings = SharedSettings.load()
+                    settings.isTutorialCompleted = true
+                    SharedSettings.save(settings)
+                    
+                    // 2. Tell AppState to move on
+                    appState.goToMain()
+                }) {
+                    Text("DEBUG: SKIP TO MAIN")
+                        .font(.caption2)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.red)
+                        .padding(.vertical, 8)
+                        .padding(.horizontal, 16)
+                        .background(Color.red.opacity(0.1))
+                        .clipShape(Capsule())
+                        .overlay(
+                            Capsule().stroke(Color.red.opacity(0.3), lineWidth: 1)
+                        )
+                }
+                .padding(.bottom, 20)
+                #endif
             }
         }
         .onAppear {

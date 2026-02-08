@@ -115,11 +115,10 @@ struct ShortcutsSetupView: View {
                     }) {
                         Text(isLastStep ? "Finish Setup" : "Next Step")
                             .font(.headline)
-                            .fontWeight(.bold) // Added weight
+                            .fontWeight(.bold)
                             .frame(maxWidth: .infinity)
-                            .foregroundStyle(.black)
                     }
-                    .buttonStyle(VividGlassButtonStyle()) // Updated Style
+                    .buttonStyle(VividGlassButtonStyle())
                     .padding(.horizontal, 24)
                     .padding(.bottom, 20)
                 }

@@ -15,7 +15,6 @@ struct InitialSetupView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // 1. Background
                 Color.black.ignoresSafeArea()
                 
                 RadialGradient(
@@ -34,7 +33,7 @@ struct InitialSetupView: View {
                             .foregroundStyle(.white)
                             .padding(.top, 60)
                         
-                        Text("Flick optimizes its commands based on your primary music service.")
+                        Text("Flick optimizes playback commands for your primary music service.")
                             .font(.title3)
                             .foregroundStyle(.gray)
                             .multilineTextAlignment(.center)

@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct SettingsView: View {
+    #if DEBUG
+    @EnvironmentObject var appState: AppStateManager
+    #endif
     @Environment(\.dismiss) var dismiss
     @State private var settings = SharedSettings.load()
     @State private var showShortcutsSetup = false
@@ -113,6 +116,7 @@ struct SettingsView: View {
                     }
                 }
                 
+                #if DEBUG
                 Section {
                     Button(action: {
                         triggerHaptic()
@@ -120,14 +124,26 @@ struct SettingsView: View {
                     }) {
                         HStack(spacing: 15) {
                             Image(systemName: "flask.fill")
-                                .foregroundStyle(.purple)
+                                .foregroundStyle(.green)
                             Text("Open test panel")
+                                .foregroundStyle(.white)
+                        }
+                    }
+                    
+                    Button(action: {
+                        appState.currentState = .welcome
+                    }) {
+                        HStack(spacing: 15) {
+                            Image(systemName: "arrow.counterclockwise.circle.fill")
+                                .foregroundStyle(.green)
+                            Text("Restart")
                                 .foregroundStyle(.white)
                         }
                     }
                 } header: {
                     Text ("Debug Features")
                 }
+                #endif
                 
                 Section {
                     Link(destination: URL(string: "https://github.com/Wyld-1/Coda")!) {
