@@ -34,6 +34,7 @@ struct SettingsView: View {
                 }
                 .tint(.orange)
                 
+                /*
                 // Feedback link
                 Link(destination: URL(string: "https://forms.gle/srpX8xf9EpCDjmC18")!) {
                     ZStack {
@@ -50,6 +51,7 @@ struct SettingsView: View {
                     }
                     .frame(maxWidth: .infinity)
                 }
+                */
                 
                 // Restart tutorial button
                 Button(action: {

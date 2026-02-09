@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct CreditsView: View {
-    @Environment(\.dismiss) var dismiss  // ← Auto dismiss
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                Text("Coda 1.0")
+                Text("Flick 1.0")
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.secondary)
                 
