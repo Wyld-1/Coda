@@ -42,7 +42,7 @@ struct WelcomeView: View {
                         .font(.system(size: 36, weight: .bold, design: .rounded))
                         .foregroundStyle(.white)
                     
-                    Text("Buttons just had a bad day.")
+                    Text("Playback just got convenient")
                         .font(.title3)
                         .foregroundStyle(.gray)
                         .multilineTextAlignment(.center)
@@ -55,9 +55,7 @@ struct WelcomeView: View {
                 Button(action: {
                     let generator = UIImpactFeedbackGenerator(style: .medium)
                     generator.impactOccurred()
-                    withAnimation(.spring()) {
-                        appState.completeWelcome()
-                    }
+                    appState.completeWelcome()
                 }) {
                     Text("Continue")
                         .font(.headline)

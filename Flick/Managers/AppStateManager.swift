@@ -48,12 +48,16 @@ class AppStateManager: ObservableObject {
     }
     
     func completePlaybackChoice(useShortcuts: Bool) {
+        print("🟢 completePlaybackChoice called")
+        
         var settings = SharedSettings.load()
         settings.useShortcutsForPlayback = useShortcuts
         settings.hasCompletedInitialSetup = true
         SharedSettings.save(settings)
         
+        print("🟢 Changing state to .waitingForWatch")
         currentState = .waitingForWatch
+        print("🟢 State changed")
     }
     
     func goToMain() {

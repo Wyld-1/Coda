@@ -106,11 +106,7 @@ struct ShortcutsSetupView: View {
                 // Main Action Button
                 VStack {
                     Button(action: {
-                        if isLastStep && appState.currentState != .main {
-                            appState.completePlaybackChoice(useShortcuts: true)
-                        } else {
-                            handleNextButton()
-                        }
+                        handleNextButton()
                     }) {
                         Text(isLastStep ? "Finish Setup" : "Next Step")
                             .font(.headline)
@@ -118,7 +114,7 @@ struct ShortcutsSetupView: View {
                             .frame(maxWidth: .infinity)
                             .foregroundStyle(.black)
                     }
-                    .buttonStyle(VividGlassButtonStyle()) // Uses shared style
+                    .buttonStyle(VividGlassButtonStyle())
                     .padding(.horizontal, 24)
                     .padding(.bottom, 20)
                 }
@@ -157,7 +153,7 @@ struct StepCardView: View {
             
             // Icon Logic: Check if it's the Asset Name or a System Symbol
             if step.mainIcon == "Shortcuts Icon" {
-                Image(step.mainIcon) // Loads your custom Asset
+                Image(step.mainIcon) // Loads custom Shortcuts asset
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 80, height: 80)

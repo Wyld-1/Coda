@@ -1,5 +1,5 @@
 //
-//  InitialSetupView.swift
+//  PlayerSetupView.swift
 //  Flick
 //
 //  Choose playback method
@@ -9,126 +9,119 @@ import SwiftUI
 
 struct PlayerSetupView: View {
     @EnvironmentObject var appState: AppStateManager
-    @State private var useShortcuts = false // false = Apple Music, true = Others
-    @State private var navigateToShortcuts = false // Controls the push navigation
+    @State private var useShortcuts = false // false = Apple Music, true = Other
+    @State private var showShortcutsSetup = false
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Color.black.ignoresSafeArea()
-                
-                RadialGradient(
-                    gradient: Gradient(colors: [.orange.opacity(0.1), .clear]),
-                    center: .center,
-                    startRadius: 10,
-                    endRadius: 400
-                )
-                .ignoresSafeArea()
-                
-                VStack(spacing: 0) {
-                    // Header
-                    VStack(spacing: 16) {
-                        Text("Select Player")
-                            .font(.system(size: 34, weight: .bold, design: .rounded))
-                            .foregroundStyle(.white)
-                            .padding(.top, 60)
-                        
-                        Text("Flick optimizes playback commands for your primary music service.")
-                            .font(.title3)
-                            .foregroundStyle(.gray)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 40)
-                    }
+        ZStack {
+            Color.black.ignoresSafeArea()
+            
+            RadialGradient(
+                gradient: Gradient(colors: [.orange.opacity(0.1), .clear]),
+                center: .center,
+                startRadius: 10,
+                endRadius: 400
+            )
+            .ignoresSafeArea()
+            
+            VStack(spacing: 0) {
+                // Header
+                VStack(spacing: 16) {
+                    Text("Select Player")
+                        .font(.system(size: 34, weight: .bold, design: .rounded))
+                        .foregroundStyle(.white)
+                        .padding(.top, 60)
                     
-                    Spacer()
-                    
-                    // Selection Buttons
-                    HStack(spacing: 20) {
-                        // Apple Music (Native)
-                        ServiceCard(
-                            isSelected: !useShortcuts,
-                            title: "Apple Music",
-                            iconName: "Apple Music Icon",
-                            description: "Native Control",
-                            color: .pink
-                        ) {
-                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                useShortcuts = false
-                            }
-                            let generator = UIImpactFeedbackGenerator(style: .light)
-                            generator.impactOccurred()
-                        }
-                        
-                        // Spotify / Other (Shortcuts)
-                        ServiceCard(
-                            isSelected: useShortcuts,
-                            title: "Spotify / Other",
-                            iconName: "Spotify Icon",
-                            description: "Via Shortcuts",
-                            color: .green
-                        ) {
-                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                useShortcuts = true
-                            }
-                            let generator = UIImpactFeedbackGenerator(style: .light)
-                            generator.impactOccurred()
-                        }
-                    }
-                    .frame(height: 220)
-                    .padding(.horizontal, 24)
-                    
-                    Spacer()
-                    
-                    // Info Text
-                    Text(useShortcuts ? "Flick will help you set up Shortcuts in the next step." : "")
-                        .font(.body)
+                    Text("Flick optimizes playback commands for your primary music service.")
+                        .font(.title3)
                         .foregroundStyle(.gray)
                         .multilineTextAlignment(.center)
-                        .lineLimit(nil)
-                        .fixedSize(horizontal: false, vertical: true)
                         .padding(.horizontal, 40)
-                        .frame(height: 40)
-                        .animation(.easeInOut, value: useShortcuts)
-                    
-                    Spacer()
-                    
-                    // Continue Button
-                    Button(action: {
-                        let generator = UIImpactFeedbackGenerator(style: .medium)
-                        generator.impactOccurred()
-                        
-                        if useShortcuts {
-                            // Push to Shortcuts Setup
-                            navigateToShortcuts = true
-                        } else {
-                            // Finish immediately for Apple Music
-                            withAnimation {
-                                appState.completePlaybackChoice(useShortcuts: false)
-                            }
-                        }
-                    }) {
-                        Text("Continue")
-                            .font(.headline)
-                            .fontWeight(.bold)
-                            .frame(maxWidth: .infinity)
-                            .foregroundStyle(.black)
-                    }
-                    .buttonStyle(VividGlassButtonStyle()) // Uses shared style
-                    .padding(.horizontal, 30)
-                    .padding(.bottom, 50)
                 }
-            }
-            // The "Push" Navigation Logic
-            .navigationDestination(isPresented: $navigateToShortcuts) {
-                ShortcutsSetupView()
-                    .navigationBarBackButtonHidden(true)
+                
+                Spacer()
+                
+                // Selection Buttons
+                HStack(spacing: 20) {
+                    // Apple Music (Native)
+                    ServiceCard(
+                        isSelected: !useShortcuts,
+                        title: "Apple Music",
+                        iconName: "Apple Music Icon",
+                        description: "Native Control",
+                        color: .pink
+                    ) {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                            useShortcuts = false
+                        }
+                        let generator = UIImpactFeedbackGenerator(style: .light)
+                        generator.impactOccurred()
+                    }
+                    
+                    // Spotify / Other (Shortcuts)
+                    ServiceCard(
+                        isSelected: useShortcuts,
+                        title: "Spotify / Other",
+                        iconName: "Spotify Icon",
+                        description: "Via Shortcuts",
+                        color: .green
+                    ) {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                            useShortcuts = true
+                        }
+                        let generator = UIImpactFeedbackGenerator(style: .light)
+                        generator.impactOccurred()
+                    }
+                }
+                .frame(height: 220)
+                .padding(.horizontal, 24)
+                
+                Spacer()
+                
+                // Info Text
+                Text(useShortcuts ? "Flick will help you set up Shortcuts in the next step." : "")
+                    .font(.body)
+                    .foregroundStyle(.gray)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(nil)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 40)
+                    .frame(height: 40)
+                    .animation(.easeInOut, value: useShortcuts)
+                
+                Spacer()
+                
+                // Continue Button
+                Button(action: {
+                    let generator = UIImpactFeedbackGenerator(style: .medium)
+                    generator.impactOccurred()
+                    
+                    if useShortcuts {
+                        // Show shortcuts setup as fullScreenCover
+                        showShortcutsSetup = true
+                    } else {
+                        // Finish immediately for Apple Music
+                        appState.completePlaybackChoice(useShortcuts: false)
+                    }
+                }) {
+                    Text("Continue")
+                        .font(.headline)
+                        .fontWeight(.bold)
+                        .frame(maxWidth: .infinity)
+                        .foregroundStyle(.black)
+                }
+                .buttonStyle(VividGlassButtonStyle())
+                .padding(.horizontal, 30)
+                .padding(.bottom, 50)
             }
         }
-        .onAppear {
-            // If they just finished the setup loop, complete the onboarding
-            if useShortcuts && UserDefaults.standard.bool(forKey: "shortcutsConfigured") {
+        .fullScreenCover(isPresented: $showShortcutsSetup) {
+            // onDismiss callback - runs when sheet closes
+            if UserDefaults.standard.bool(forKey: "shortcutsConfigured") {
                 appState.completePlaybackChoice(useShortcuts: true)
             }
+        } content: {
+            ShortcutsSetupView()
         }
     }
 }
@@ -188,7 +181,7 @@ struct ServiceCard: View {
                 .padding()
             }
         }
-        .buttonStyle(ScaleButtonStyle()) // Uses shared style
+        .buttonStyle(ScaleButtonStyle())
     }
 }
 

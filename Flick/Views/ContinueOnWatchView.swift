@@ -34,10 +34,7 @@ struct ContinueOnWatchView: View {
                         var settings = SharedSettings.load()
                         settings.isTutorialCompleted = true
                         SharedSettings.save(settings)
-                        
-                        withAnimation {
-                            appState.currentState = .welcome
-                        }
+                        appState.currentState = .welcome
                     }) {
                         Text("DEBUG: RESTART")
                             .font(.caption2)

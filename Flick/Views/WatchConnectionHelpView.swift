@@ -127,7 +127,8 @@ struct WatchConnectionHelpView: View {
                                         .font(.subheadline)
                                         .foregroundStyle(.gray)
                                         .multilineTextAlignment(.center)
-                                        .padding(.horizontal)
+                                        .lineLimit(nil)
+                                        .fixedSize(horizontal: false, vertical: true)
                                 }
                                 
                                 Button(action: {
@@ -165,7 +166,8 @@ struct WatchConnectionHelpView: View {
                                     .font(.subheadline)
                                     .foregroundStyle(.gray)
                                     .multilineTextAlignment(.center)
-                                    .padding(.horizontal)
+                                    .lineLimit(nil)
+                                    .fixedSize(horizontal: false, vertical: true)
                             
                                 Button(action: {
                                     if let url = URL(string: "https://forms.gle/RSBVKFks8jatoQLS8") {

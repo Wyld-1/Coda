@@ -89,7 +89,7 @@ struct SettingsView: View {
                                 
                                 Image(systemName: "arrow.up.forward")
                                     .font(.caption)
-                                    .foregroundStyle(.indigo)
+                                    .foregroundStyle(.pink)
                             }
                         }
                     }
@@ -139,7 +139,7 @@ struct SettingsView: View {
                             color: .green,
                             title: "Open Test Controls"
                         ) {
-                            Image(systemName: "chevron.up")
+                            Image(systemName: "chevron.left.forwardslash.chevron.right")
                                 .font(.caption)
                                 .foregroundStyle(.green)
                         }
