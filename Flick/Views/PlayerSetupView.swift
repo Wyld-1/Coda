@@ -102,7 +102,9 @@ struct PlayerSetupView: View {
                             navigateToShortcuts = true
                         } else {
                             // Finish immediately for Apple Music
-                            appState.completePlaybackChoice(useShortcuts: false)
+                            withAnimation {
+                                appState.completePlaybackChoice(useShortcuts: false)
+                            }
                         }
                     }) {
                         Text("Continue")

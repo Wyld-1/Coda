@@ -51,7 +51,7 @@ struct WatchConnectionHelpView: View {
                                 title: "No Watch Paired",
                                 description: "iOS can't find a paired Apple Watch.",
                                 buttonTitle: "Pair Watch",
-                                url: "x-apple-watchapp://" // Opens Watch app
+                                url: "itms-watchs://" // Opens Watch app
                             )
                         } else if !isInstalled {
                             DiagnosticCard(
@@ -59,7 +59,7 @@ struct WatchConnectionHelpView: View {
                                 title: "Flick Not Installed",
                                 description: "Flick is not installed on your Watch.",
                                 buttonTitle: "Install Flick",
-                                url: "x-apple-watchapp://" // Opens Watch app
+                                url: "itms-watchs://" // Opens Watch app
                             )
                         } else if isReachable {
                             // Success Check with celebration
@@ -115,21 +115,33 @@ struct WatchConnectionHelpView: View {
                         // MARK: - Footer (Contact vs Troubleshooting)
                         
                         if isReachable {
-                            Link(destination: URL(string: "https://forms.gle/RSBVKFks8jatoQLS8")!) {
-                                HStack {
-                                    Text("Still having issues? Contact Flick.")
-                                        .font(.body)
-                                        .fontWeight(.medium)
+                            VStack(spacing: 24) {
+                                Divider().background(Color.gray.opacity(0.3))
+                                
+                                VStack(spacing: 8) {
+                                    Text("Still experiencing issues?")
+                                        .font(.headline)
                                         .foregroundStyle(.white)
                                     
-                                    Spacer()
-                                    
-                                    Image(systemName: "arrow.up.forward.app.fill")
-                                        .foregroundStyle(.green)
+                                    Text("If Flick isn't behaving as expected, let us know.")
+                                        .font(.subheadline)
+                                        .foregroundStyle(.gray)
+                                        .multilineTextAlignment(.center)
+                                        .padding(.horizontal)
                                 }
-                                .padding()
-                                .background(Color.white.opacity(0.05))
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                                
+                                Button(action: {
+                                    if let url = URL(string: "https://forms.gle/RSBVKFks8jatoQLS8") {
+                                        UIApplication.shared.open(url)
+                                    }
+                                }) {
+                                    Text("Report a Bug")
+                                        .font(.headline)
+                                        .fontWeight(.bold)
+                                        .frame(maxWidth: .infinity)
+                                        .foregroundStyle(.black)
+                                }
+                                .buttonStyle(VividGlassButtonStyle())
                             }
                         } else {
                             Divider().background(Color.gray.opacity(0.3))
@@ -140,8 +152,33 @@ struct WatchConnectionHelpView: View {
                             
                             VStack(alignment: .leading, spacing: 20) {
                                 HelpRow(number: "1", text: "Ensure Bluetooth is on and Airplane Mode is off.")
-                                HelpRow(number: "2", text: "Open Flick on your Watch.")
-                                HelpRow(number: "3", text: "Force quit the iPhone app and restart.")
+                                HelpRow(number: "2", text: "Check that Flick is open on your Watch.")
+                                HelpRow(number: "3", text: "Quit and reopen the app on both devices.")
+                                HelpRow(number: "4", text: "Restart your iPhone.")
+                                
+                                Text("Still experiencing issues?")
+                                    .font(.headline)
+                                    .foregroundStyle(.white)
+                                    .padding(.top, 15)
+                                
+                                Text("If Flick isn't behaving as expected, let us know.")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.gray)
+                                    .multilineTextAlignment(.center)
+                                    .padding(.horizontal)
+                            
+                                Button(action: {
+                                    if let url = URL(string: "https://forms.gle/RSBVKFks8jatoQLS8") {
+                                        UIApplication.shared.open(url)
+                                    }
+                                }) {
+                                    Text("Report a Bug")
+                                        .font(.headline)
+                                        .fontWeight(.bold)
+                                        .frame(maxWidth: .infinity)
+                                        .foregroundStyle(.black)
+                                }
+                                .buttonStyle(VividGlassButtonStyle())
                             }
                         }
                     }

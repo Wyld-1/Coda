@@ -19,19 +19,19 @@ struct FlickApp: App {
                 switch appState.currentState {
                 case .welcome:
                     WelcomeView()
-                        .transition(.opacity)
+                        .transition(.scale(scale: 0.8).combined(with: .opacity))
                     
                 case .playbackChoice:
                     PlayerSetupView()
-                        .transition(.move(edge: .trailing))
+                        .transition(.scale(scale: 0.8).combined(with: .opacity))
                     
                 case .waitingForWatch:
                     ContinueOnWatchView()
-                        .transition(.move(edge: .trailing))
+                        .transition(.scale(scale: 0.8).combined(with: .opacity))
                     
                 case .main:
                     MainView()
-                        .transition(.opacity)
+                        .transition(.scale(scale: 0.8).combined(with: .opacity))
                 }
             }
             .animation(.easeInOut(duration: 0.4), value: appState.currentState)

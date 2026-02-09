@@ -140,12 +140,12 @@ struct ContinueOnWatchView: View {
                 
                 // Control Dock
                 GlassStatusDock(showHelp: $showHelpSheet)
-                    .padding(.bottom, 40)
+                    .padding(.bottom, 6)
             }
         }
         .sheet(isPresented: $showHelpSheet) {
             WatchConnectionHelpView()
-                .presentationDetents([.medium, .large])
+                .presentationDetents([.fraction(0.3), .large])
                 .presentationDragIndicator(.visible)
         }
         .onAppear {

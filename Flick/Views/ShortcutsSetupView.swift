@@ -25,10 +25,9 @@ struct ShortcutsSetupView: View {
             title: "Open Shortcuts",
             mainIcon: "Shortcuts Icon",
             instructions: [
-                InstructionRow(icon: "iphone", text: "Go to your Home Screen"),
-                InstructionRow(icon: "magnifyingglass", text: "Find and open the **Shortcuts** app")
+                InstructionRow(icon: "app.fill", text: "Open the **Shortcuts** app to begin setup")
             ],
-            actionTitle: "Launch Shortcuts",
+            actionTitle: "Open Shortcuts",
             urlScheme: "shortcuts://"
         ),
         SetupStep(
@@ -46,7 +45,7 @@ struct ShortcutsSetupView: View {
             title: "FlickPrevious",
             mainIcon: "backward.fill",
             instructions: [
-                InstructionRow(icon: "plus.circle.fill", text: "Create another new shortcut"),
+                InstructionRow(icon: "plus.circle.fill", text: "Tap **+** to create a new shortcut"),
                 InstructionRow(icon: "backward.fill", text: "Add the **'Skip Back'** action"),
                 InstructionRow(icon: "text.cursor", text: "Rename to: **FlickPrevious**")
             ],
@@ -57,7 +56,7 @@ struct ShortcutsSetupView: View {
             title: "FlickPlayPause",
             mainIcon: "playpause.fill",
             instructions: [
-                InstructionRow(icon: "plus.circle.fill", text: "Create the final shortcut"),
+                InstructionRow(icon: "plus.circle.fill", text: "Tap **+** to create a new shortcut"),
                 InstructionRow(icon: "playpause.fill", text: "Add the **'Play/Pause'** action"),
                 InstructionRow(icon: "text.cursor", text: "Rename to: **FlickPlayPause**")
             ],
@@ -109,9 +108,9 @@ struct ShortcutsSetupView: View {
                     Button(action: {
                         if isLastStep && appState.currentState != .main {
                             appState.completePlaybackChoice(useShortcuts: true)
+                        } else {
+                            handleNextButton()
                         }
-                        
-                        handleNextButton()
                     }) {
                         Text(isLastStep ? "Finish Setup" : "Next Step")
                             .font(.headline)
@@ -201,7 +200,7 @@ struct StepCardView: View {
             }
             .padding(.horizontal, 24)
             
-            // Launch button (only for Step 1)
+            // Open Shortcuts button (only for Step 1)
             if let action = step.actionTitle,
                let urlString = step.urlScheme,
                let url = URL(string: urlString) {

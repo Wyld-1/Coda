@@ -28,7 +28,7 @@ struct GlassStatusDock: View {
                     .frame(width: 8, height: 8)
                     .shadow(color: isReachable ? .green.opacity(0.8) : .red.opacity(0.8), radius: 6)
                 
-                Text(isReachable ? "WATCH ACTIVE" : "WATCH DISCONNECTED")
+                Text(isReachable ? "WATCH CONNECTED" : "WATCH DISCONNECTED")
                     .font(.caption)
                     .fontWeight(.bold)
                     .fontDesign(.monospaced)
@@ -84,4 +84,8 @@ struct GlassStatusDock: View {
             previousReachability = isReachable
         }
     }
+}
+
+#Preview {
+    GlassStatusDock(showHelp: .constant(true))
 }
