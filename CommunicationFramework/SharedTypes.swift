@@ -6,17 +6,21 @@
 //
 
 import Foundation
-
-// MARK: - Constants
-struct AppConstants {
-    static let appVersion = "1.1"
-}
+import SwiftUI
 
 // Commands that can be sent from Watch to iPhone
 enum MediaCommand: String, Codable {
     case nextTrack
     case previousTrack
     case playPause
+}
+
+// Constants that sync between devices
+struct AppConstants {
+    static let appVersion = "1.1"
+    static let flickPurple = Color(red: 96/255,
+                                   green: 0/255,
+                                   blue: 247/255)
 }
 
 // Settings that sync between devices

@@ -1,5 +1,5 @@
 //
-//  HelpView.swift
+//  SettingsView.swift (Watch)
 //  Flick
 //
 //  Created by Liam Lefohn on 1/30/26.
@@ -15,7 +15,14 @@ struct SettingsView: View {
         List {
             Section {
                 // Reverse flick directions
-                Toggle(isOn: $appState.isFlickDirectionReversed) {
+                Toggle(isOn: Binding(
+                    get: { appState.isFlickDirectionReversed },
+                    set: { newValue in
+                        appState.isFlickDirectionReversed = newValue
+                        appState.saveSettings() // ← Save on change
+                        WKInterfaceDevice.current().play(.click)
+                    }
+                )) {
                     HStack(spacing: 4) {
                         Text("Flip")
                         Image(systemName: "backward.fill")
@@ -26,7 +33,14 @@ struct SettingsView: View {
                 .tint(.orange)
                 
                 // Enable/disable tap for play/pause toggle
-                Toggle(isOn: $appState.isTapEnabled) {
+                Toggle(isOn: Binding(
+                    get: { appState.isTapEnabled },
+                    set: { newValue in
+                        appState.isTapEnabled = newValue
+                        appState.saveSettings() // Save on change
+                        WKInterfaceDevice.current().play(.click)
+                    }
+                )) {
                     HStack(spacing: 4) {
                         Text("Tap screen to")
                         Image(systemName: "playpause.fill")
@@ -34,36 +48,14 @@ struct SettingsView: View {
                 }
                 .tint(.orange)
                 
-                /*
-                // Feedback link
-                Link(destination: URL(string: "https://forms.gle/srpX8xf9EpCDjmC18")!) {
-                    ZStack {
-                        // Centered label
-                        Text("Join the build")
-                            .foregroundStyle(.purple)
-
-                        // Left-aligned icon
-                        HStack {
-                            Image(systemName: "hammer.circle.fill")
-                                .foregroundStyle(.purple)
-                            Spacer()
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
-                }
-                */
-                
                 // Restart tutorial button
                 Button(action: {
                     WKInterfaceDevice.current().play(.click)
                     appState.resetToTutorial()
                 }) {
                     ZStack {
-                        // Centered label
                         Text("Replay tutorial")
                             .foregroundStyle(.orange)
-
-                        // Left-aligned icon
                         HStack {
                             Image(systemName: "arrow.counterclockwise.circle.fill")
                                 .foregroundStyle(.orange)
@@ -79,11 +71,8 @@ struct SettingsView: View {
                     showCredits = true
                 }) {
                     ZStack {
-                        // Centered label
                         Text("About")
                             .foregroundStyle(.secondary)
-
-                        // Left-aligned icon
                         HStack {
                             Image(systemName: "info.circle.fill")
                                 .foregroundStyle(.secondary)
@@ -99,6 +88,9 @@ struct SettingsView: View {
         .sheet(isPresented: $showCredits) {
             CreditsView()
         }
+        .onAppear {
+            appState.loadSettings() // ← Load when menu opens
+        }
     }
 }
 
@@ -106,4 +98,3 @@ struct SettingsView: View {
     SettingsView()
         .environmentObject(AppStateManager())
 }
-

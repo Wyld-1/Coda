@@ -18,12 +18,8 @@ enum AppState {
 class AppStateManager: ObservableObject {
     @Published var currentState: AppState
     @Published var isLeftWrist: Bool = true
-    @Published var isTapEnabled: Bool {
-        didSet { syncSettings() }
-    }
-    @Published var isFlickDirectionReversed: Bool {
-        didSet { syncSettings() }
-    }
+    @Published var isTapEnabled: Bool
+    @Published var isFlickDirectionReversed: Bool
     
     init() {
         let wristLocation = WKInterfaceDevice.current().wristLocation
@@ -38,11 +34,23 @@ class AppStateManager: ObservableObject {
         self.currentState = hasCompletedWelcome ? .main : .welcome
     }
     
-    private func syncSettings() {
+    // Explicitly save when toggle changes
+    func saveSettings() {
         var settings = SharedSettings.load()
         settings.isTapEnabled = self.isTapEnabled
         settings.isFlickDirectionReversed = self.isFlickDirectionReversed
         SharedSettings.save(settings)
+        
+        print("⌚️ Settings saved to SharedSettings")
+    }
+    
+    // Explicitly load when view appears
+    func loadSettings() {
+        let settings = SharedSettings.load()
+        self.isTapEnabled = settings.isTapEnabled
+        self.isFlickDirectionReversed = settings.isFlickDirectionReversed
+        
+        print("⌚️ Settings loaded from SharedSettings")
     }
     
     func completeWelcome() {

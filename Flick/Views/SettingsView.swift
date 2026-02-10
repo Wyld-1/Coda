@@ -2,8 +2,6 @@
 //  SettingsView.swift
 //  Flick
 //
-//  Created by Liam Lefohn on 2/5/26.
-//
 
 import SwiftUI
 
@@ -20,16 +18,22 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                // MARK: - Gestures Section
+                // Gestures Section
                 Section {
                     SettingsRow(
                         icon: "arrow.left.arrow.right",
                         color: .orange,
                         title: "Reverse Flick directions"
                     ) {
-                        Toggle("", isOn: $settings.isFlickDirectionReversed)
-                            .labelsHidden()
-                            .tint(.orange)
+                        Toggle("", isOn: Binding(
+                            get: { settings.isFlickDirectionReversed },
+                            set: { newValue in
+                                settings.isFlickDirectionReversed = newValue
+                                saveSettingsImmediately() // Save immediately on change
+                            }
+                        ))
+                        .labelsHidden()
+                        .tint(.orange)
                     }
                     
                     SettingsRow(
@@ -37,24 +41,36 @@ struct SettingsView: View {
                         color: .orange,
                         title: "Tap Watch to Play/Pause"
                     ) {
-                        Toggle("", isOn: $settings.isTapEnabled)
-                            .labelsHidden()
-                            .tint(.orange)
+                        Toggle("", isOn: Binding(
+                            get: { settings.isTapEnabled },
+                            set: { newValue in
+                                settings.isTapEnabled = newValue
+                                saveSettingsImmediately() // Save immediately on change
+                            }
+                        ))
+                        .labelsHidden()
+                        .tint(.orange)
                     }
                 } header: {
                     Text("Gestures")
                 }
                 
-                // MARK: - Playback Method Section
+                // Playback Method Section
                 Section {
                     SettingsRow(
                         icon: "music.note",
                         color: .pink,
                         title: "Use Shortcuts"
                     ) {
-                        Toggle("", isOn: $settings.useShortcutsForPlayback)
-                            .labelsHidden()
-                            .tint(.pink)
+                        Toggle("", isOn: Binding(
+                            get: { settings.useShortcutsForPlayback },
+                            set: { newValue in
+                                settings.useShortcutsForPlayback = newValue
+                                saveSettingsImmediately() // ← Save immediately on change
+                            }
+                        ))
+                        .labelsHidden()
+                        .tint(.pink)
                     }
                     
                     // Conditional Configuration Rows
@@ -79,8 +95,8 @@ struct SettingsView: View {
                                 Image("Shortcuts Icon")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: 28, height: 28) // Fixed: Matches SettingsRow size
-                                    .clipShape(RoundedRectangle(cornerRadius: 6)) // Matches SettingsRow radius
+                                    .frame(width: 28, height: 28)
+                                    .clipShape(RoundedRectangle(cornerRadius: 6))
                                 
                                 Text("Open Shortcuts App")
                                     .foregroundStyle(.white)
@@ -103,7 +119,7 @@ struct SettingsView: View {
                     }
                 }
                 
-                // MARK: - Community & About
+                // About
                 Section {
                     HStack {
                         SettingsRow(
@@ -133,7 +149,7 @@ struct SettingsView: View {
                     Text("Created by Wyld-1 for the wild ones.")
                 }
                 
-                // MARK: - Debug Section (Hidden in Release)
+                // Debug Section (hidden in release)
                 #if DEBUG
                 Section {
                     Button(action: {
@@ -181,17 +197,18 @@ struct SettingsView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Done") {
                         HapticManager.shared.playImpact()
-                        saveAndDismiss()
+                        dismiss() // Only dismiss, don't save
                     }
                     .foregroundStyle(.orange)
                     .fontWeight(.bold)
                 }
             }
             .preferredColorScheme(.dark)
-            // Global Change Listener
-            .onChange(of: settings.isFlickDirectionReversed) { _, _ in autoSave() }
-            .onChange(of: settings.isTapEnabled) { _, _ in autoSave() }
-            .onChange(of: settings.useShortcutsForPlayback) { _, _ in autoSave() }
+            .onAppear {
+                // Reload fresh settings when menu opens
+                settings = SharedSettings.load()
+                print("📱 Settings loaded: tap=\(settings.isTapEnabled), reversed=\(settings.isFlickDirectionReversed), shortcuts=\(settings.useShortcutsForPlayback)")
+            }
         }
         .sheet(isPresented: $showShortcutsSetup) {
             ShortcutsSetupView()
@@ -203,17 +220,16 @@ struct SettingsView: View {
     
     // MARK: - Helpers
     
-    private func autoSave() {
+    // ✅ Save immediately when toggle changes
+    private func saveSettingsImmediately() {
         let generator = UIImpactFeedbackGenerator(style: .light)
         generator.impactOccurred()
         SharedSettings.save(settings)
-    }
-    
-    private func saveAndDismiss() {
-        SharedSettings.save(settings)
-        dismiss()
+        print("📱 Settings saved: tap=\(settings.isTapEnabled), reversed=\(settings.isFlickDirectionReversed), shortcuts=\(settings.useShortcutsForPlayback)")
     }
 }
+
+// ... rest of file (SettingsRow, etc.) stays the same
 
 // MARK: - Helper View Component
 struct SettingsRow<Content: View>: View {

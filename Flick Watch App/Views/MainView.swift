@@ -9,11 +9,12 @@
 import SwiftUI
 
 struct MainView: View {
+    @EnvironmentObject var appState: AppStateManager
     @StateObject private var motionManager = MotionManager()
     @State private var lastGesture: GestureType = .none
     @Environment(\.isLuminanceReduced) var isLuminanceReduced
     @State private var showSettings = false
-    @EnvironmentObject var appState: AppStateManager
+    private let GESTURE_DETECTED_ICON_TIME = 2
     
     var body: some View {
         GeometryReader { geometry in
@@ -26,21 +27,28 @@ struct MainView: View {
                         .symbolEffect(.breathe.plain.wholeSymbol, isActive: !isLuminanceReduced)
                         .foregroundStyle(.orange)
                     
-                    // Gesture icon (replaces "Flick" text)
-                    if lastGesture != .none {
-                        Image(systemName: gestureIcon(for: lastGesture))
-                            .font(.system(size: geometry.size.width * 0.25))
-                            .foregroundStyle(.blue)
-                            .fontWeight(.black)
-                            .symbolEffect(.bounce, value: lastGesture)
-                    } else {
-                        Text("Flick")
-                            .foregroundColor(Color(red: 96/255,
-                                                        green: 0/255,
-                                                        blue: 247/255))
-                            .font(.system(size: geometry.size.width * 0.2))
-                            .fontWeight(.black)
+                    // Gesture icon or Flick text
+                    ZStack {
+                        // Gesture icon (shows when gesture detected)
+                        if lastGesture != .none {
+                            Image(systemName: gestureIcon(for: lastGesture))
+                                .font(.system(size: geometry.size.width * 0.25))
+                                .foregroundStyle(AppConstants.flickPurple)
+                                .fontWeight(.black)
+                                .symbolEffect(.bounce, value: lastGesture)
+                                .transition(.scale.combined(with: .opacity))
+                        }
+                        
+                        // "Flick" text (shows when no gesture)
+                        if lastGesture == .none {
+                            Text("Flick")
+                                .foregroundColor(AppConstants.flickPurple)
+                                .font(.system(size: geometry.size.width * 0.2))
+                                .fontWeight(.black)
+                                .transition(.scale.combined(with: .opacity))
+                        }
                     }
+                    .animation(.easeInOut(duration: 0.3), value: lastGesture)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .contentShape(Rectangle())
@@ -48,13 +56,22 @@ struct MainView: View {
                     if appState.isTapEnabled {
                         WatchConnectivityManager.shared.sendMediaCommand(.playPause)
                         WKInterfaceDevice.current().play(.click)
+                        
+                        // Show icon temporarily
                         withAnimation {
                             lastGesture = .playPause
+                        }
+                        
+                        // Hide after a delay
+                        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(GESTURE_DETECTED_ICON_TIME)) {
+                            withAnimation {
+                                lastGesture = .none
+                            }
                         }
                     }
                 }
                 
-                // Button layer on top, and unaffected by screen tap
+                // Settings button on top
                 Button(action: {
                     WKInterfaceDevice.current().play(.click)
                     showSettings = true
@@ -72,8 +89,6 @@ struct MainView: View {
                     y: geometry.size.height * -0.115
                 )
                 .opacity(isLuminanceReduced ? 0.6 : 1)
-                
-                // Ensures button receives taps first
                 .allowsHitTesting(true)
             }
         }
@@ -86,8 +101,18 @@ struct MainView: View {
             motionManager.appState = appState
         }
         .onChange(of: motionManager.lastGesture) { oldValue, newValue in
+            // Update local state when gesture detected
             withAnimation {
                 lastGesture = newValue
+            }
+            
+            // If gesture was detected (not .none), auto-hide after a delay
+            if newValue != .none {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(GESTURE_DETECTED_ICON_TIME)) {
+                    withAnimation {
+                        lastGesture = .none
+                    }
+                }
             }
         }
     }

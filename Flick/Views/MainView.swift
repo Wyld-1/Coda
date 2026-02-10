@@ -41,9 +41,7 @@ struct MainView: View {
                         )
                     
                     Text("Flick")
-                        .foregroundColor(Color(red: 96/255,
-                                             green: 0/255,
-                                             blue: 247/255))
+                        .foregroundColor(AppConstants.flickPurple)
                         .font(.system(size: 65))
                         .fontWeight(.black)
                 }
