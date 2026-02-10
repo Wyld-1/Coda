@@ -20,8 +20,12 @@ class AppStateManager: ObservableObject {
     @Published var currentState: AppState
     
     init() {
-        let settings = SharedSettings.load()
+        // Wake up the Managers immediately to ensure iPhone listens for commands even if the UI hasn't loaded yet.
+        _ = WatchConnectivityManager.shared
+        _ = iOSMediaManager.shared
         HapticManager.shared.prepare()
+        
+        let settings = SharedSettings.load()
         
         // Determine initial state
         if settings.isTutorialCompleted {

@@ -9,6 +9,9 @@ import Foundation
 import MediaPlayer
 import UIKit
 import Combine
+#if DEBUG
+import AudioToolbox
+#endif
 
 class iOSMediaManager: ObservableObject {
     var objectWillChange = ObservableObjectPublisher()
@@ -31,6 +34,12 @@ class iOSMediaManager: ObservableObject {
     func handleCommand(_ command: MediaCommand) {
         print("📱 Handling command: \(command.rawValue)")
         
+        #if DEBUG
+        // Haptic feedback
+        AudioServicesPlaySystemSound(1520)
+        //HapticManager.shared.playSuccess()
+        #endif
+        
         // Check which playback method to use
         let settings = SharedSettings.load()
         
@@ -39,10 +48,6 @@ class iOSMediaManager: ObservableObject {
         } else {
             handleCommandViaAppleMusic(command)
         }
-        
-        // Haptic feedback
-        let generator = UIImpactFeedbackGenerator(style: .light)
-        generator.impactOccurred()
         
         // Notify UI
         NotificationCenter.default.post(

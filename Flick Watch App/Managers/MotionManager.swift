@@ -11,6 +11,7 @@ import CoreMotion
 import Combine
 import HealthKit
 import WatchKit
+import WatchConnectivity
 
 // Gesture types the app can detect
 enum GestureType {
@@ -185,10 +186,10 @@ class MotionManager: NSObject, ObservableObject {
         lastGesture = gesture
         lastGestureTime = Date()
         
-        // 2. Local Haptic Feedback (So you know the watch felt it)
+        // 2. Local Haptic Feedback
         WKInterfaceDevice.current().play(.click)
         
-        // 3. Map gesture to command and SEND IT 🚀
+        // 3. Map gesture to command
         var commandToSend: MediaCommand?
         
         switch gesture {
@@ -202,13 +203,17 @@ class MotionManager: NSObject, ObservableObject {
             commandToSend = nil
         }
         
-        // Actually sends to iPhone
+        // 4. Send to iPhone
         if let command = commandToSend {
-            print("⌚️ Gesture detected: \(gesture). Sending to iPhone...")
+            print("⌚️ Gesture detected: \(gesture)")
+            print("⌚️ WCSession activated: \(WCSession.default.activationState.rawValue)")
+            print("⌚️ WCSession reachable: \(WCSession.default.isReachable)")
+            print("⌚️ Sending command: \(command.rawValue)")
+            
             WatchConnectivityManager.shared.sendMediaCommand(command)
         }
         
-        // 4. Reset state after cooldown
+        // 5. Reset state
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             self?.lastGesture = .none
         }
