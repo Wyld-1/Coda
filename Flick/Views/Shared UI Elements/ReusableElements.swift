@@ -85,12 +85,12 @@ struct VividGlassButtonStyle: ButtonStyle {
 
 struct GlassStatusDock: View {
     @Binding var showHelp: Bool
+    
+    // Triggers redraws when connection status changes
+    @ObservedObject private var connectivity = WatchConnectivityManager.shared
+    
     // Local state to track changes for notification haptics
     @State private var previousReachability = false
-    
-    var isReachable: Bool {
-        WatchConnectivityManager.shared.isReachable
-    }
     
     var body: some View {
         Button(action: {
@@ -99,11 +99,11 @@ struct GlassStatusDock: View {
         }) {
             HStack(spacing: 10) {
                 Circle()
-                    .fill(isReachable ? Color.green : Color.red)
+                    .fill(connectivity.isReachable ? Color.green : Color.red)
                     .frame(width: 8, height: 8)
-                    .shadow(color: isReachable ? .green.opacity(0.8) : .red.opacity(0.8), radius: 6)
+                    .shadow(color: connectivity.isReachable ? .green.opacity(0.8) : .red.opacity(0.8), radius: 6)
                 
-                Text(isReachable ? "WATCH CONNECTED" : "WATCH DISCONNECTED")
+                Text(connectivity.isReachable ? "WATCH CONNECTED" : "WATCH DISCONNECTED")
                     .font(.caption)
                     .fontWeight(.bold)
                     .fontDesign(.monospaced)
@@ -142,7 +142,8 @@ struct GlassStatusDock: View {
             .shadow(color: .black.opacity(0.2), radius: 10, y: 5)
         }
         .buttonStyle(ScaleButtonStyle())
-        .onChange(of: isReachable) { old, new in
+        // Update the onChange to watch the observable property
+        .onChange(of: connectivity.isReachable) { old, new in
             if new && !previousReachability {
                 // Connected
                 HapticManager.shared.playSuccess()
@@ -153,7 +154,7 @@ struct GlassStatusDock: View {
             previousReachability = new
         }
         .onAppear {
-            previousReachability = isReachable
+            previousReachability = connectivity.isReachable
         }
     }
 }

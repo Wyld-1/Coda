@@ -12,24 +12,39 @@ struct ShortcutsSetupView: View {
     @Environment(\.dismiss) var dismiss
     @State private var currentStep = 0
     
-    // Data model for the specific instruction rows
+    // Data model
     struct InstructionRow: Identifiable {
         let id = UUID()
         let icon: String
-        let text: LocalizedStringKey // Use Key for Markdown support
+        let text: LocalizedStringKey
     }
     
-    // Steps Configuration
+    struct SetupStep {
+        let title: String
+        let mainIcon: String
+        let instructions: [InstructionRow]
+        let actionTitle: String?
+        let urlScheme: String?
+        let isDownloadable: Bool
+    }
+    
+    // Configuration
     let setupSteps = [
+        // STEP 1: Friendly Intro
         SetupStep(
-            title: "Open Shortcuts",
-            mainIcon: "Shortcuts Icon",
+            title: "Quick Setup",
+            mainIcon: "wand.and.stars",
             instructions: [
-                InstructionRow(icon: "app.fill", text: "Open the **Shortcuts** app to begin setup")
+                InstructionRow(icon: "music.note", text: "Flick uses Apple Shortcuts to seamlessly control your audio."),
+                InstructionRow(icon: "arrow.down.circle.fill", text: "We will import **3 small helpers** to get you connected."),
+                InstructionRow(icon: "checkmark.circle.fill", text: "Simply tap **'Add Shortcut'** on the next few screens.")
             ],
-            actionTitle: "Open Shortcuts",
-            urlScheme: "shortcuts://"
+            actionTitle: nil,
+            urlScheme: nil,
+            isDownloadable: false
         ),
+        
+        // STEP 2: FlickNext
         SetupStep(
             title: "FlickNext",
             mainIcon: "forward.fill",
@@ -38,9 +53,12 @@ struct ShortcutsSetupView: View {
                 InstructionRow(icon: "forward.fill", text: "Add the **'Skip Forward'** action"),
                 InstructionRow(icon: "text.cursor", text: "Rename to: **FlickNext**")
             ],
-            actionTitle: nil,
-            urlScheme: nil
+            actionTitle: "Add Shortcut",
+            urlScheme: "https://www.icloud.com/shortcuts/9bd9c6bf8ff141c4a62edc6c30a6db71",
+            isDownloadable: true
         ),
+        
+        // STEP 3: FlickPrevious
         SetupStep(
             title: "FlickPrevious",
             mainIcon: "backward.fill",
@@ -49,9 +67,12 @@ struct ShortcutsSetupView: View {
                 InstructionRow(icon: "backward.fill", text: "Add the **'Skip Back'** action"),
                 InstructionRow(icon: "text.cursor", text: "Rename to: **FlickPrevious**")
             ],
-            actionTitle: nil,
-            urlScheme: nil
+            actionTitle: "Add Shortcut",
+            urlScheme: "https://www.icloud.com/shortcuts/6ee63669f3b04e2f94bb5a143cde57a2",
+            isDownloadable: true
         ),
+        
+        // STEP 4: FlickPlayPause
         SetupStep(
             title: "FlickPlayPause",
             mainIcon: "playpause.fill",
@@ -60,8 +81,9 @@ struct ShortcutsSetupView: View {
                 InstructionRow(icon: "playpause.fill", text: "Add the **'Play/Pause'** action"),
                 InstructionRow(icon: "text.cursor", text: "Rename to: **FlickPlayPause**")
             ],
-            actionTitle: nil,
-            urlScheme: nil
+            actionTitle: "Add Shortcut",
+            urlScheme: "https://www.icloud.com/shortcuts/56b8737e5cb9404ebf38e0baf9b0042b",
+            isDownloadable: true
         )
     ]
     
@@ -71,17 +93,16 @@ struct ShortcutsSetupView: View {
             
             RadialGradient(
                 gradient: Gradient(colors: [.orange.opacity(0.1), .clear]),
-                center: .center,
+                center: .top,
                 startRadius: 10,
                 endRadius: 400
             )
             .ignoresSafeArea()
             
             VStack(spacing: 0) {
+                // Header and navigation dots
                 HStack {
                     Spacer()
-                    
-                    // Dots
                     HStack(spacing: 8) {
                         ForEach(0..<setupSteps.count, id: \.self) { index in
                             Circle()
@@ -92,9 +113,10 @@ struct ShortcutsSetupView: View {
                     }
                     Spacer()
                 }
-                .padding()
+                .padding(.top, 20)
+                .padding(.bottom, 10)
                 
-                // Carousel
+                // Content Carousel
                 TabView(selection: $currentStep) {
                     ForEach(0..<setupSteps.count, id: \.self) { index in
                         StepCardView(step: setupSteps[index])
@@ -103,7 +125,7 @@ struct ShortcutsSetupView: View {
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 
-                // Main Action Button
+                // Bottom Navigation
                 VStack {
                     Button(action: {
                         handleNextButton()
@@ -144,91 +166,157 @@ struct ShortcutsSetupView: View {
 // MARK: - Views
 
 struct StepCardView: View {
-    let step: SetupStep
+    let step: ShortcutsSetupView.SetupStep
+    @State private var isManualExpanded = false
     
     var body: some View {
-        VStack(spacing: 30) {
-            Spacer()
+        VStack(spacing: 0) {
             
-            // Icon Logic: Check if it's the Asset Name or a System Symbol
-            if step.mainIcon == "Shortcuts Icon" {
-                Image(step.mainIcon) // Loads custom Shortcuts asset
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 80, height: 80)
-                    .clipShape(RoundedRectangle(cornerRadius: 18)) // iOS App Icon Shape
-                    .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 4)
-                    .padding(.bottom, 10)
-            } else {
-                Image(systemName: step.mainIcon)
-                    .font(.system(size: 80))
-                    .foregroundStyle(.orange)
-                    .symbolEffect(.bounce, value: step.mainIcon)
-                    .padding(.bottom, 10)
-            }
-            
-            // Title
-            Text(step.title)
-                .font(.system(size: 34, weight: .bold, design: .rounded))
-                .foregroundStyle(.white)
-            
-            // Instruction List
-            VStack(alignment: .leading, spacing: 12) {
-                ForEach(step.instructions) { instruction in
-                    HStack(spacing: 16) {
-                        Image(systemName: instruction.icon)
-                            .font(.system(size: 20))
-                            .frame(width: 30)
-                            .foregroundStyle(.orange)
-                        
-                        Text(instruction.text)
-                            .font(.body)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.leading)
-                    }
-                    .padding(.vertical, 12)
-                    .padding(.horizontal, 16)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.white.opacity(0.08))
-                    .cornerRadius(12)
-                }
-            }
-            .padding(.horizontal, 24)
-            
-            // Open Shortcuts button (only for Step 1)
-            if let action = step.actionTitle,
-               let urlString = step.urlScheme,
-               let url = URL(string: urlString) {
+            // --- HEADER ZONE ---
+            // Pins the icon and title to the top of the screen
+            VStack(spacing: 0) {
+                Spacer().frame(height: 20) // Top Margin
                 
-                Button(action: {
-                    UIApplication.shared.open(url)
-                }) {
-                    HStack {
-                        Text(action)
-                        Image(systemName: "arrow.up.right")
+                // Icon Container
+                ZStack {
+                    if step.mainIcon == "Shortcuts Icon" {
+                        Image(step.mainIcon)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 90, height: 90)
+                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                            .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 4)
+                    } else {
+                        Image(systemName: step.mainIcon)
+                            .font(.system(size: 80))
+                            .foregroundStyle(.orange)
+                            .symbolEffect(.bounce, value: step.mainIcon)
                     }
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-                    .foregroundStyle(.white)
-                    .padding(.vertical, 10)
-                    .padding(.horizontal, 20)
-                    .background(Capsule().stroke(.white.opacity(0.3), lineWidth: 1))
                 }
-                .padding(.top, 10)
+                .frame(height: 100) // Fixed height for icon area
+                .padding(.bottom, 20)
+                
+                // Title Container
+                Text(step.title)
+                    .font(.system(size: 34, weight: .bold, design: .rounded))
+                    .foregroundStyle(.white)
+                    .frame(height: 45) // Fixed height for title line
+            }
+            .padding(.bottom, 30) // Spacing between Header and Content
+            
+            // --- CONTENT ZONE ---
+            if step.isDownloadable {
+                // DOWNLOADABLE LAYOUT (Steps 2-4)
+                VStack(spacing: 0) {
+                    
+                    // The "Action Card"
+                    VStack(spacing: 0) {
+                        
+                        // 1. Primary Action: Add Shortcut Link
+                        if let action = step.actionTitle, let urlString = step.urlScheme, let url = URL(string: urlString) {
+                            Button(action: { UIApplication.shared.open(url) }) {
+                                HStack {
+                                    Image(systemName: "icloud.and.arrow.down")
+                                        .font(.title3)
+                                    Text(action)
+                                        .font(.headline)
+                                        .fontWeight(.bold)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 18)
+                                .background(Color.orange)
+                                .foregroundStyle(.black)
+                                .clipShape(Capsule())
+                            }
+                            .padding(20)
+                        }
+                        
+                        Divider()
+                            .background(Color.white.opacity(0.1))
+                            .padding(.horizontal, 20)
+                        
+                        // 2. Manual Fallback Toggle
+                        VStack(spacing: 0) {
+                            Button(action: {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                    isManualExpanded.toggle()
+                                }
+                            }) {
+                                HStack {
+                                    Text("Or set up manually")
+                                        .font(.subheadline)
+                                        .foregroundStyle(.gray)
+                                    
+                                    Image(systemName: "chevron.right")
+                                        .font(.caption)
+                                        .foregroundStyle(.gray)
+                                        .rotationEffect(.degrees(isManualExpanded ? 90 : 0))
+                                    
+                                    Spacer() // Pushes content to left
+                                }
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 16)
+                                .contentShape(Rectangle())
+                            }
+                            
+                            if isManualExpanded {
+                                InstructionsListView(instructions: step.instructions)
+                                    .padding(.horizontal, 20)
+                                    .padding(.bottom, 20)
+                                    .transition(.opacity)
+                            }
+                        }
+                    }
+                    .background(Color.white.opacity(0.06))
+                    .clipShape(RoundedRectangle(cornerRadius: 24))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 24)
+                            .stroke(.white.opacity(0.1), lineWidth: 1)
+                    )
+                    .padding(.horizontal, 24)
+                }
+                
+            } else {
+                // STANDARD LAYOUT (Step 1 - Intro)
+                // Just the instructions list, aligned to top
+                InstructionsListView(instructions: step.instructions)
+                    .padding(.horizontal, 24)
             }
             
-            Spacer()
+            // --- FLEXIBLE ZONE ---
+            // This Spacer absorbs all extra space.
+            // Expanding the menu eats THIS space, so the Header stays pinned.
             Spacer()
         }
     }
 }
 
-struct SetupStep {
-    let title: String
-    let mainIcon: String
+// Subview for the list of instructions
+struct InstructionsListView: View {
     let instructions: [ShortcutsSetupView.InstructionRow]
-    let actionTitle: String?
-    let urlScheme: String?
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            ForEach(instructions) { instruction in
+                HStack(spacing: 16) {
+                    Image(systemName: instruction.icon)
+                        .font(.system(size: 20))
+                        .frame(width: 30)
+                        .foregroundStyle(.orange)
+                    
+                    Text(instruction.text)
+                        .font(.body)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.leading)
+                }
+                .padding(.vertical, 12)
+                .padding(.horizontal, 16)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color.white.opacity(0.08))
+                .cornerRadius(12)
+            }
+        }
+    }
 }
 
 #Preview {
