@@ -11,6 +11,7 @@ struct SettingsView: View {
     #endif
     
     @Environment(\.dismiss) var dismiss
+    
     @State private var settings = SharedSettings.load()
     @State private var showShortcutsSetup = false
     @State private var showTestControls = false
@@ -29,7 +30,7 @@ struct SettingsView: View {
                             get: { settings.isFlickDirectionReversed },
                             set: { newValue in
                                 settings.isFlickDirectionReversed = newValue
-                                saveSettingsImmediately() // Save immediately on change
+                                saveSettingsImmediately()
                             }
                         ))
                         .labelsHidden()
@@ -45,7 +46,7 @@ struct SettingsView: View {
                             get: { settings.isTapEnabled },
                             set: { newValue in
                                 settings.isTapEnabled = newValue
-                                saveSettingsImmediately() // Save immediately on change
+                                saveSettingsImmediately()
                             }
                         ))
                         .labelsHidden()
@@ -66,7 +67,7 @@ struct SettingsView: View {
                             get: { settings.useShortcutsForPlayback },
                             set: { newValue in
                                 settings.useShortcutsForPlayback = newValue
-                                saveSettingsImmediately() // ← Save immediately on change
+                                saveSettingsImmediately()
                             }
                         ))
                         .labelsHidden()
@@ -197,19 +198,19 @@ struct SettingsView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Done") {
                         HapticManager.shared.playImpact()
-                        dismiss() // Only dismiss, don't save
+                        dismiss()
                     }
                     .foregroundStyle(.orange)
                     .fontWeight(.bold)
                 }
             }
-            .preferredColorScheme(.dark)
             .onAppear {
-                // Reload fresh settings when menu opens
+                // Ensures settings are fresh every time the menu opens
                 settings = SharedSettings.load()
-                print("📱 Settings loaded: tap=\(settings.isTapEnabled), reversed=\(settings.isFlickDirectionReversed), shortcuts=\(settings.useShortcutsForPlayback)")
+                print("📱 Settings opened: tap=\(settings.isTapEnabled), reversed=\(settings.isFlickDirectionReversed)")
             }
         }
+        .preferredColorScheme(.dark)
         .sheet(isPresented: $showShortcutsSetup) {
             ShortcutsSetupView()
         }
@@ -220,16 +221,13 @@ struct SettingsView: View {
     
     // MARK: - Helpers
     
-    // ✅ Save immediately when toggle changes
     private func saveSettingsImmediately() {
         let generator = UIImpactFeedbackGenerator(style: .light)
         generator.impactOccurred()
         SharedSettings.save(settings)
-        print("📱 Settings saved: tap=\(settings.isTapEnabled), reversed=\(settings.isFlickDirectionReversed), shortcuts=\(settings.useShortcutsForPlayback)")
+        print("📱 Settings saved: tap=\(settings.isTapEnabled), reversed=\(settings.isFlickDirectionReversed)")
     }
 }
-
-// ... rest of file (SettingsRow, etc.) stays the same
 
 // MARK: - Helper View Component
 struct SettingsRow<Content: View>: View {
@@ -247,7 +245,6 @@ struct SettingsRow<Content: View>: View {
     
     var body: some View {
         HStack(spacing: 12) {
-            // Apple-style Icon Square
             ZStack {
                 RoundedRectangle(cornerRadius: 6)
                     .fill(color)
