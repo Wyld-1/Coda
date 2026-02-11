@@ -123,19 +123,22 @@ extension WatchConnectivityManager: WCSessionDelegate {
         }
     }
     
-    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
-        if let data = applicationContext["settings"] as? Data,
-           let settings = try? JSONDecoder().decode(AppSettings.self, from: data) {
-            SharedSettings.save(settings)
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
+            #if os(iOS)
+            print("📱 iPhone received message: \(message)")
             
-            // Notify iOS app to refresh
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: NSNotification.Name("SettingsDidUpdate"), object: nil)
+            // Immedietly send the receipt to satisfy the Watch
+            replyHandler(["status": "received"])
+            
+            // Process the command
+            if let commandString = message["command"] as? String,
+               let command = MediaCommand(rawValue: commandString) {
+                DispatchQueue.main.async {
+                    iOSMediaManager.shared.handleCommand(command)
+                }
             }
-            
-            print("✅ Settings received and saved")
+            #endif
         }
-    }
     
     // MARK: - Receive Messages (iPhone side)
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
