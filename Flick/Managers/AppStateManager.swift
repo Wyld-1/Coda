@@ -28,7 +28,7 @@ class AppStateManager: ObservableObject {
         let settings = SharedSettings.load()
         
         // Determine initial state
-        if settings.isTutorialCompleted {
+        if settings.isTutorialCompleted && settings.hasCompletedInitialSetup {
             self.currentState = .main
         } else if settings.hasCompletedInitialSetup {
             self.currentState = .waitingForWatch
@@ -43,7 +43,8 @@ class AppStateManager: ObservableObject {
             queue: .main
         ) { [weak self] _ in
             let settings = SharedSettings.load()
-            if settings.isTutorialCompleted {
+            // Only auto-advance if iPhone setup is also finished
+            if settings.isTutorialCompleted && settings.hasCompletedInitialSetup {
                 self?.currentState = .main
             }
         }
@@ -59,7 +60,12 @@ class AppStateManager: ObservableObject {
         settings.hasCompletedInitialSetup = true
         SharedSettings.save(settings)
         
-        currentState = .waitingForWatch
+        // Check if the watch tutorial was already done while we were setting up
+        if settings.isTutorialCompleted {
+            currentState = .main
+        } else {
+            currentState = .waitingForWatch
+        }
     }
     
     func goToMain() {
