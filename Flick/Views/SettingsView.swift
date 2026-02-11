@@ -155,11 +155,7 @@ struct SettingsView: View {
                 Section {
                     Button(action: {
                         HapticManager.shared.playImpact()
-                        var newSettings = settings
-                        newSettings.hasCompletedInitialSetup = false
-                        newSettings.isTutorialCompleted = false
-                        SharedSettings.save(newSettings)
-                        appState.currentState = .welcome
+                        appState.resetForDebug()
                         dismiss()
                     }) {
                         SettingsRow(
