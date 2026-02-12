@@ -2,6 +2,8 @@
 //  iOSMediaManager.swift
 //  Flick
 //
+//  Handles media playback on iPhone
+//
 
 import Foundation
 import MediaPlayer
@@ -29,117 +31,88 @@ class iOSMediaManager: NSObject, ObservableObject, SPTAppRemoteDelegate, SPTAppR
     }()
     
     private let appleMusicPlayer = MPMusicPlayerController.systemMusicPlayer
+    private var isConnecting = false
     
-    // Shortcut Mapping
+    // Shortcut names
     private let shortcutNames = [
         "nextTrack": "FlickNext",
         "previousTrack": "FlickPrevious",
         "playPause": "FlickPlayPause"
     ]
     
-    // ✅ NEW: Track connection state
-    private var isConnecting = false
-    
     override private init() {
         super.init()
-        print("📱 iOS MediaManager initialized")
+        print("📱 MediaManager initialized")
         
-        // Load token immediately
-        if let savedToken = UserDefaults.standard.string(forKey: "spotifyAccessToken") {
-            print("🔑 Found saved Spotify token")
-            appRemote.connectionParameters.accessToken = savedToken
+        // Auto-load saved token
+        if let token = UserDefaults.standard.string(forKey: "spotifyAccessToken") {
+            appRemote.connectionParameters.accessToken = token
+            print("🔑 Loaded saved Spotify token")
         }
     }
     
-    // MARK: - Smart Connection
+    // MARK: - Spotify Connection
     
     func connectToSpotify() {
-        if appRemote.isConnected || isConnecting {
-            print("⏭️ Already connected or connecting, skipping")
+        guard !appRemote.isConnected, !isConnecting else { return }
+        
+        guard let token = UserDefaults.standard.string(forKey: "spotifyAccessToken") else {
+            print("⚠️ No token - authorize first")
             return
         }
         
-        if let savedToken = UserDefaults.standard.string(forKey: "spotifyAccessToken") {
-            appRemote.connectionParameters.accessToken = savedToken
-            isConnecting = true
-            appRemote.connect()
-            print("♻️ Connecting with saved token...")
-        } else {
-            print("⚠️ No token found. User must authorize first.")
-        }
+        appRemote.connectionParameters.accessToken = token
+        isConnecting = true
+        appRemote.connect()
+        print("🔗 Connecting to Spotify...")
     }
     
-    // Handles the callback from the Spotify App
     func handleSpotifyURL(_ url: URL) {
-        let parameters = appRemote.authorizationParameters(from: url)
-        
-        if let token = parameters?[SPTAppRemoteAccessTokenKey] {
-            // Save the token
-            print("💾 Saving Spotify token...")
-            UserDefaults.standard.set(token, forKey: "spotifyAccessToken")
-            UserDefaults.standard.synchronize() // ✅ Force immediate write
-            
-            // Verify it saved
-            if let verified = UserDefaults.standard.string(forKey: "spotifyAccessToken") {
-                print("✅ Token verified: \(verified.prefix(20))...")
-            } else {
-                print("❌ Token save FAILED!")
-            }
-            
-            // Set token and connect
-            appRemote.connectionParameters.accessToken = token
-            isConnecting = true
-            appRemote.connect()
-            print("🔗 Initiating Spotify connection...")
-            
-        } else if let errorDescription = parameters?[SPTAppRemoteErrorDescriptionKey] {
-            print("❌ Spotify Auth Error: \(errorDescription)")
-        }
-    }
-    
-    // The "Jump" Authorization
-    func authorizeSpotify() async {
-        if appRemote.isConnected || isConnecting {
-            print("⏭️ Already connected/connecting")
+        guard let params = appRemote.authorizationParameters(from: url),
+              let token = params[SPTAppRemoteAccessTokenKey] else {
+            print("❌ Invalid auth callback")
             return
         }
         
-        // 1. Try Silent Connect first
+        // Save and connect
+        UserDefaults.standard.set(token, forKey: "spotifyAccessToken")
+        appRemote.connectionParameters.accessToken = token
+        isConnecting = true
+        appRemote.connect()
+        print("✅ Token saved, connecting...")
+    }
+    
+    func authorizeSpotify() async {
+        guard !appRemote.isConnected, !isConnecting else { return }
+        
+        // Try existing token first
         if UserDefaults.standard.string(forKey: "spotifyAccessToken") != nil {
             connectToSpotify()
-            // Wait briefly to see if it works
-            try? await Task.sleep(nanoseconds: 800_000_000) // 0.8s
-            if appRemote.isConnected {
-                print("✅ Soft connect successful")
-                return
-            }
+            try? await Task.sleep(nanoseconds: 800_000_000)
+            if appRemote.isConnected { return }
         }
         
-        // 2. Fallback to App Switch
-        print("🚀 Initiating full Spotify authorization...")
+        // Launch Spotify auth
         await MainActor.run {
-            if let spotifyUrl = URL(string: "spotify://"),
-               UIApplication.shared.canOpenURL(spotifyUrl) {
-                appRemote.authorizeAndPlayURI("")
-            } else {
-                print("❌ Spotify app not installed")
+            guard let url = URL(string: "spotify://"),
+                  UIApplication.shared.canOpenURL(url) else {
+                print("❌ Spotify not installed")
                 HapticManager.shared.playWarning()
+                return
             }
+            appRemote.authorizeAndPlayURI("")
+            print("🚀 Launching Spotify auth...")
         }
     }
     
     func disconnectFromSpotify() {
-        if appRemote.isConnected {
-            appRemote.disconnect()
-        }
+        if appRemote.isConnected { appRemote.disconnect() }
         isConnecting = false
     }
     
     // MARK: - Command Handler
     
     func handleCommand(_ command: MediaCommand) {
-        print("📱 Handling command: \(command.rawValue)")
-        
         #if DEBUG
         AudioServicesPlaySystemSound(1520)
         #endif
@@ -148,38 +121,9 @@ class iOSMediaManager: NSObject, ObservableObject, SPTAppRemoteDelegate, SPTAppR
         
         switch settings.playbackMethod {
         case .spotify:
-            // ✅ NEW: Better connection check
-            if appRemote.isConnected {
-                handleCommandViaSpotify(command)
-            } else if isConnecting {
-                print("⏳ Connection in progress, command queued")
-                // Wait for connection before executing
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-                    if self?.appRemote.isConnected == true {
-                        self?.handleCommandViaSpotify(command)
-                    } else {
-                        print("❌ Connection timeout")
-                        HapticManager.shared.playWarning()
-                    }
-                }
-            } else {
-                print("⚠️ Spotify disconnected. Attempting reconnect...")
-                connectToSpotify()
-                
-                // Queue the command for retry
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-                    if self?.appRemote.isConnected == true {
-                        self?.handleCommandViaSpotify(command)
-                    } else {
-                        print("❌ Reconnect failed")
-                        HapticManager.shared.playWarning()
-                    }
-                }
-            }
-            
+            executeSpotifyCommand(command)
         case .shortcuts:
             handleCommandViaShortcuts(command)
-            
         case .appleMusic:
             handleCommandViaAppleMusic(command)
         }
@@ -187,13 +131,36 @@ class iOSMediaManager: NSObject, ObservableObject, SPTAppRemoteDelegate, SPTAppR
         NotificationCenter.default.post(name: NSNotification.Name("CommandReceived"), object: command)
     }
     
-    // MARK: - Playback Execution
+    private func executeSpotifyCommand(_ command: MediaCommand) {
+        if appRemote.isConnected {
+            handleCommandViaSpotify(command)
+        } else if isConnecting {
+            // Queue command while connecting
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+                guard let self = self, self.appRemote.isConnected else {
+                    HapticManager.shared.playWarning()
+                    return
+                }
+                self.handleCommandViaSpotify(command)
+            }
+        } else {
+            // Attempt reconnect and queue
+            connectToSpotify()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+                guard let self = self, self.appRemote.isConnected else {
+                    HapticManager.shared.playWarning()
+                    return
+                }
+                self.handleCommandViaSpotify(command)
+            }
+        }
+    }
+    
+    // MARK: - Playback Methods
     
     private func handleCommandViaSpotify(_ command: MediaCommand) {
-        print("📱 Using Spotify App Remote")
-        
         guard let playerAPI = appRemote.playerAPI else {
-            print("❌ Spotify PlayerAPI not ready")
+            print("❌ PlayerAPI not ready")
             return
         }
         
@@ -203,74 +170,67 @@ class iOSMediaManager: NSObject, ObservableObject, SPTAppRemoteDelegate, SPTAppR
         case .previousTrack:
             playerAPI.skip(toPrevious: nil)
         case .playPause:
-            playerAPI.getPlayerState({ [weak self] result, error in
-                guard let self = self, let state = result as? SPTAppRemotePlayerState else { return }
+            playerAPI.getPlayerState { [weak self] result, _ in
+                guard let state = result as? SPTAppRemotePlayerState else { return }
                 if state.isPaused {
-                    self.appRemote.playerAPI?.resume(nil)
+                    self?.appRemote.playerAPI?.resume(nil)
                 } else {
-                    self.appRemote.playerAPI?.pause(nil)
+                    self?.appRemote.playerAPI?.pause(nil)
                 }
-            })
+            }
         }
     }
     
     private func handleCommandViaAppleMusic(_ command: MediaCommand) {
-        print("📱 Using Apple Music API")
         switch command {
-        case .nextTrack: appleMusicPlayer.skipToNextItem()
-        case .previousTrack: appleMusicPlayer.skipToPreviousItem()
+        case .nextTrack:
+            appleMusicPlayer.skipToNextItem()
+        case .previousTrack:
+            appleMusicPlayer.skipToPreviousItem()
         case .playPause:
-            if appleMusicPlayer.playbackState == .playing { appleMusicPlayer.pause() }
-            else { appleMusicPlayer.play() }
+            if appleMusicPlayer.playbackState == .playing {
+                appleMusicPlayer.pause()
+            } else {
+                appleMusicPlayer.play()
+            }
         }
     }
     
     private func handleCommandViaShortcuts(_ command: MediaCommand) {
-        print("📱 Using Shortcuts")
-        let key = command.rawValue
-        if let shortcutName = shortcutNames[key] {
-            runShortcut(named: shortcutName)
+        guard let shortcutName = shortcutNames[command.rawValue],
+              let encoded = shortcutName.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let url = URL(string: "shortcuts://run-shortcut?name=\(encoded)") else {
+            return
         }
-    }
-    
-    private func runShortcut(named name: String) {
-        guard let encodedName = name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-              let url = URL(string: "shortcuts://run-shortcut?name=\(encodedName)") else { return }
         
-        UIApplication.shared.open(url, options: [:]) { success in
+        UIApplication.shared.open(url) { success in
             if !success {
                 DispatchQueue.main.async { HapticManager.shared.playWarning() }
             }
         }
     }
     
-    // MARK: - Delegates
+    // MARK: - Spotify Delegates
     
     func appRemoteDidEstablishConnection(_ appRemote: SPTAppRemote) {
-        isConnecting = false // ✅ Clear connecting flag
-        print("🟢 Connected to Spotify")
+        isConnecting = false
+        print("🟢 Spotify connected")
         
         appRemote.playerAPI?.delegate = self
-        appRemote.playerAPI?.subscribe(toPlayerState: { (success, error) in
-            if let error = error {
-                print("⚠️ Error subscribing: \(error.localizedDescription)")
-            } else {
-                print("✅ Subscribed to Spotify Player State")
-            }
-        })
+        appRemote.playerAPI?.subscribe(toPlayerState: nil)
     }
 
     func appRemote(_ appRemote: SPTAppRemote, didFailConnectionAttemptWithError error: Error?) {
-        isConnecting = false // ✅ Clear connecting flag
-        print("🔴 Failed to connect to Spotify: \(error?.localizedDescription ?? "Unknown")")
+        isConnecting = false
+        print("🔴 Connection failed: \(error?.localizedDescription ?? "unknown")")
     }
 
     func appRemote(_ appRemote: SPTAppRemote, didDisconnectWithError error: Error?) {
-        isConnecting = false // ✅ Clear connecting flag
-        print("🔴 Disconnected from Spotify")
+        isConnecting = false
+        print("🔴 Disconnected")
     }
     
     func playerStateDidChange(_ playerState: SPTAppRemotePlayerState) {
-        print("🎵 Spotify: \(playerState.isPaused ? "Paused" : "Playing")")
+        // Silent - only log if needed for debugging
     }
 }

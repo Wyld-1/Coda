@@ -137,7 +137,7 @@ struct PlayerSetupView: View {
     private var infoText: String {
         switch selectedMethod {
         case .appleMusic: return ""
-        case .spotify: return "Requires Premium account."
+        case .spotify: return "Spotify Premium requiered."
         case .shortcuts: return "You will be guided though Shortcuts setup next."
         }
     }
@@ -238,7 +238,7 @@ struct ServiceCard: View {
                     
                     // Physical Card Body
                     RoundedRectangle(cornerRadius: 20)
-                        .fill(isSelected ? color.opacity(0.1) : Color.white.opacity(0.05))
+                        .fill(isSelected ? color.opacity(0.35) : Color.white.opacity(0.05))
                 }
             }
             .overlay(
