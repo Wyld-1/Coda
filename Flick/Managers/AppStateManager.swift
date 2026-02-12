@@ -57,14 +57,15 @@ class AppStateManager: ObservableObject {
         currentState = .playbackChoice
     }
     
-    func completePlaybackChoice(useShortcuts: Bool) {
-        // 1. Save preferences to Shared Settings
+    func completePlaybackChoice(method: PlaybackMethod) {
         var settings = SharedSettings.load()
-        settings.useShortcutsForPlayback = useShortcuts
-        settings.hasCompletedInitialSetup = true  // ← Mark iOS setup complete
+        
+        settings.playbackMethod = method
+        settings.hasCompletedInitialSetup = true
+        
         SharedSettings.save(settings)
         
-        print("📱 iOS setup complete. Watch tutorial complete: \(settings.isTutorialCompleted)")
+        print("📱 iOS setup complete. Playback Method: \(method)")
         
         // 2. Check if BOTH are complete
         if settings.isTutorialCompleted {

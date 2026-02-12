@@ -1,10 +1,7 @@
 //
 //  AppStateManager.swift
-//  Flick
+//  Flick (Watch)
 //
-//  Created by Liam Lefohn on 1/27/26.
-//
-// Tracks which screen to show
 
 import SwiftUI
 import Combine
@@ -20,6 +17,7 @@ class AppStateManager: ObservableObject {
     @Published var isLeftWrist: Bool = true
     @Published var isTapEnabled: Bool
     @Published var isFlickDirectionReversed: Bool
+    @Published var playbackMethod: PlaybackMethod
     
     init() {
         let wristLocation = WKInterfaceDevice.current().wristLocation
@@ -29,6 +27,7 @@ class AppStateManager: ObservableObject {
         let settings = SharedSettings.load()
         self.isTapEnabled = settings.isTapEnabled
         self.isFlickDirectionReversed = settings.isFlickDirectionReversed
+        self.playbackMethod = settings.playbackMethod
         
         let hasCompletedWelcome = UserDefaults.standard.bool(forKey: "hasCompletedWelcome")
         self.currentState = hasCompletedWelcome ? .main : .welcome
@@ -39,6 +38,7 @@ class AppStateManager: ObservableObject {
         var settings = SharedSettings.load()
         settings.isTapEnabled = self.isTapEnabled
         settings.isFlickDirectionReversed = self.isFlickDirectionReversed
+        settings.playbackMethod = self.playbackMethod
         SharedSettings.save(settings)
         
         print("⌚️ Settings saved to SharedSettings")
@@ -49,6 +49,7 @@ class AppStateManager: ObservableObject {
         let settings = SharedSettings.load()
         self.isTapEnabled = settings.isTapEnabled
         self.isFlickDirectionReversed = settings.isFlickDirectionReversed
+        self.playbackMethod = settings.playbackMethod
         
         print("⌚️ Settings loaded from SharedSettings")
     }

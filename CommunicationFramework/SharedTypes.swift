@@ -15,12 +15,16 @@ enum MediaCommand: String, Codable {
     case playPause
 }
 
+enum PlaybackMethod: String, Codable {
+    case appleMusic
+    case spotify
+    case shortcuts
+}
+
 // Constants that sync between devices
 struct AppConstants {
     static let appVersion = "1.1"
-    static let flickPurple = Color(red: 96/255,
-                                   green: 0/255,
-                                   blue: 247/255)
+    static let flickPurple = Color(red: 96/255, green: 0/255, blue: 247/255)
 }
 
 // Settings that sync between devices
@@ -28,21 +32,24 @@ struct AppSettings: Codable {
     var isTapEnabled: Bool
     var isFlickDirectionReversed: Bool
     var isTutorialCompleted: Bool
-    var useShortcutsForPlayback: Bool
+    
+    var playbackMethod: PlaybackMethod
+    
     var hasCompletedInitialSetup: Bool
     
+    // Update default initializer
     static let `default` = AppSettings(
         isTapEnabled: false,
         isFlickDirectionReversed: false,
         isTutorialCompleted: false,
-        useShortcutsForPlayback: false,
+        playbackMethod: .appleMusic,
         hasCompletedInitialSetup: false
     )
 }
 
 // Helper to read/write settings via App Groups
 class SharedSettings {
-    private static let appGroupID = "group.codaplayback.SharedFiles"
+    private static let appGroupID = "group.flickplayback.SharedFiles"
     private static let settingsKey = "appSettings"
     
     private static var userDefaults: UserDefaults? {
@@ -65,7 +72,7 @@ class SharedSettings {
         }
         defaults.set(data, forKey: settingsKey)
         
-        // Notify Watch Connectivity to sync
+        // Notify Watch Connectivity to sync if needed
         WatchConnectivityManager.shared.syncSettings(settings)
     }
 }

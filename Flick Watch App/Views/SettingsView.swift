@@ -120,19 +120,20 @@ struct SettingsView: View {
     // MARK: - Debug Helper
     #if DEBUG
     private func clearAllData() {
-        // 1. Clear local UserDefaults
+        // Clear local UserDefaults
         UserDefaults.standard.removeObject(forKey: "hasCompletedWelcome")
         
-        // 2. Clear shared settings
+        // Clear shared settings
         var settings = SharedSettings.load()
         settings.isTutorialCompleted = false
         settings.hasCompletedInitialSetup = false
         settings.isTapEnabled = false
         settings.isFlickDirectionReversed = false
-        settings.useShortcutsForPlayback = false
+        settings.playbackMethod = .appleMusic
+        
         SharedSettings.save(settings)
         
-        // 3. Reset app state
+        // Reset app state
         appState.resetToWelcome()
         
         print("⌚️ 🗑️ All data cleared - reset to welcome")

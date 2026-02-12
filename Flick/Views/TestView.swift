@@ -24,9 +24,9 @@ struct TestView: View {
             VStack(spacing: 20) {
                 // Mode indicator
                 HStack(spacing: 8) {
-                    Image(systemName: settings.useShortcutsForPlayback ? "music.note.square.stack.fill" : "music.note")
+                    Image(systemName: modeIcon)
                         .font(.caption)
-                    Text(settings.useShortcutsForPlayback ? "Shortcuts Mode" : "Apple API Mode")
+                    Text("\(modeLabel) Mode")
                         .font(.caption)
                         .fontWeight(.medium)
                 }
@@ -46,9 +46,9 @@ struct TestView: View {
                     Button(action: {
                         mediaManager.handleCommand(.playPause)
                         HapticManager.shared.playImpact()
-                        // Only update state if using Apple Music API
-                        if !settings.useShortcutsForPlayback {
-                            togglePlaybackState()
+                        // Manual state toggle for non-Shortcuts modes
+                        if settings.playbackMethod != .shortcuts {
+                            isPlaying.toggle()
                         }
                     }) {
                         Image(systemName: playPauseIcon)
@@ -75,30 +75,47 @@ struct TestView: View {
             settings = SharedSettings.load()
             updatePlaybackState()
         }
-        .onChange(of: settings.useShortcutsForPlayback) { _, _ in
+        // Note: onChange of enum requires Equatable check or just raw value
+        .onChange(of: settings.playbackMethod.rawValue) { _, _ in
+            settings = SharedSettings.load()
             updatePlaybackState()
         }
     }
     
-    // Show play/pause icon based on mode
+    // MARK: - Logic
+    
+    private var modeIcon: String {
+        switch settings.playbackMethod {
+        case .appleMusic: return "music.note"
+        case .spotify: return "waveform"
+        case .shortcuts: return "bolt.fill"
+        }
+    }
+    
+    private var modeLabel: String {
+        switch settings.playbackMethod {
+        case .appleMusic: return "Apple Music"
+        case .spotify: return "Spotify"
+        case .shortcuts: return "Shortcuts"
+        }
+    }
+    
     private var playPauseIcon: String {
-        if settings.useShortcutsForPlayback {
-            // Shortcuts mode - can't query state, show generic icon
-            return "playpause.fill"
-        } else {
-            // Apple Music API - show actual state
+        switch settings.playbackMethod {
+        case .appleMusic:
             return isPlaying ? "pause.fill" : "play.fill"
+        case .spotify:
+            // Spotify state is hard to read synchronously here, defaulting to generic
+            return "playpause.fill"
+        case .shortcuts:
+            return "playpause.fill"
         }
     }
     
     private func updatePlaybackState() {
-        if !settings.useShortcutsForPlayback {
+        if settings.playbackMethod == .appleMusic {
             isPlaying = musicPlayer.playbackState == .playing
         }
-    }
-    
-    private func togglePlaybackState() {
-        isPlaying.toggle()
     }
 }
 

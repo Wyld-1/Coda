@@ -19,7 +19,7 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                // Gestures Section
+                // MARK: - Gestures Section
                 Section {
                     SettingsRow(
                         icon: "arrow.left.arrow.right",
@@ -56,38 +56,65 @@ struct SettingsView: View {
                     Text("Gestures")
                 }
                 
-                // Playback Method Section
+                // MARK: - Playback Source Section
                 Section {
+                    // Custom Icon Row for Player Selection
                     SettingsRow(
-                        icon: "music.note",
-                        color: .pink,
-                        title: "Use Shortcuts"
+                        icon: "square.stack.3d.down.right.fill",
+                        isSystemIcon: true,
+                        color: currentColor,
+                        title: "Playback Source"
                     ) {
-                        Toggle("", isOn: Binding(
-                            get: { settings.useShortcutsForPlayback },
-                            set: { newValue in
-                                settings.useShortcutsForPlayback = newValue
-                                saveSettingsImmediately()
+                        Menu {
+                            Picker("Source", selection: Binding(
+                                get: { settings.playbackMethod },
+                                set: { newValue in
+                                    settings.playbackMethod = newValue
+                                    saveSettingsImmediately()
+                                    
+                                    // Soft-connect check
+                                    if newValue == .spotify {
+                                        Task { await iOSMediaManager.shared.authorizeSpotify() }
+                                    }
+                                }
+                            )) {
+                                // 🎨 USE CUSTOM ASSETS IN DROPDOWN
+                                Label("Apple Music", image: "Apple Music Icon")
+                                    .tag(PlaybackMethod.appleMusic)
+                                
+                                Label("Spotify", image: "Spotify Icon")
+                                    .tag(PlaybackMethod.spotify)
+                                
+                                Label("Other", image: "Shortcuts Icon")
+                                    .tag(PlaybackMethod.shortcuts)
                             }
-                        ))
-                        .labelsHidden()
-                        .tint(.pink)
+                        } label: {
+                            HStack {
+                                Text(currentLabel)
+                                    .foregroundStyle(.gray)
+                                Image(systemName: "chevron.up.chevron.down")
+                                    .font(.caption)
+                                    .foregroundStyle(.gray)
+                            }
+                        }
                     }
                     
-                    // Conditional Configuration Rows
-                    if settings.useShortcutsForPlayback {
+                    // --- Conditional Sub-Options ---
+                    
+                    // 1. SHORTCUTS SETUP
+                    if settings.playbackMethod == .shortcuts {
                         Button(action: {
                             HapticManager.shared.playImpact()
                             showShortcutsSetup = true
                         }) {
                             SettingsRow(
                                 icon: "gearshape.fill",
-                                color: .pink,
+                                color: .purple,
                                 title: "Configure Shortcuts"
                             ) {
                                 Image(systemName: "chevron.right")
                                     .font(.caption)
-                                    .foregroundStyle(.pink)
+                                    .foregroundStyle(.purple)
                             }
                         }
                         
@@ -106,26 +133,53 @@ struct SettingsView: View {
                                 
                                 Image(systemName: "arrow.up.forward")
                                     .font(.caption)
-                                    .foregroundStyle(.pink)
+                                    .foregroundStyle(.purple)
                             }
                         }
                     }
+                    
+                    // 2. SPOTIFY FORCE RE-AUTH
+                    if settings.playbackMethod == .spotify {
+                        Button(action: {
+                            HapticManager.shared.playImpact()
+                            // Manual Force Re-Auth
+                            Task {
+                                await MainActor.run {
+                                    iOSMediaManager.shared.appRemote.authorizeAndPlayURI("")
+                                }
+                            }
+                        }) {
+                            SettingsRow(
+                                icon: "key.shield.fill",
+                                color: .green,
+                                title: "Re-Authorize Spotify"
+                            ) {
+                                Image(systemName: "arrow.up.forward")
+                                    .font(.caption)
+                                    .foregroundStyle(.green)
+                            }
+                        }
+                    }
+                    
                 } header: {
                     Text("Playback Source")
                 } footer: {
-                    if settings.useShortcutsForPlayback {
-                        Text("Required for Spotify and others. Note: iPhone must be unlocked for shortcuts to run consistently.")
-                    } else {
-                        Text("Uses native Apple Music API. Works while locked, but supports Apple Music only.")
+                    switch settings.playbackMethod {
+                    case .appleMusic:
+                        Text("Uses the native iOS Music player. Works best with Apple Music and local library.")
+                    case .spotify:
+                        Text("Controls the active Spotify session. If playback doesn't start, tap 'Re-Authorize'.")
+                    case .shortcuts:
+                        Text("Advanced mode. Runs custom Shortcuts for each gesture.")
                     }
                 }
                 
-                // About
+                // MARK: - About Section
                 Section {
                     HStack {
                         SettingsRow(
                             icon: "number",
-                            color: .purple,
+                            color: .indigo,
                             title: "Version"
                         ) {
                             Text(AppConstants.appVersion)
@@ -136,12 +190,12 @@ struct SettingsView: View {
                     Link(destination: URL(string: "https://forms.gle/RSBVKFks8jatoQLS8")!) {
                         SettingsRow(
                             icon: "hammer.fill",
-                            color: .purple,
+                            color: .indigo,
                             title: "Build Flick with us"
                         ) {
                             Image(systemName: "arrow.up.forward")
                                 .font(.caption)
-                                .foregroundStyle(.purple)
+                                .foregroundStyle(.indigo)
                         }
                     }
                 } header: {
@@ -150,7 +204,7 @@ struct SettingsView: View {
                     Text("Created by Wyld-1 for the wild ones.")
                 }
                 
-                // Debug Section (hidden in release)
+                // MARK: - Debug Section
                 #if DEBUG
                 Section {
                     Button(action: {
@@ -201,9 +255,7 @@ struct SettingsView: View {
                 }
             }
             .onAppear {
-                // Ensures settings are fresh every time the menu opens
                 settings = SharedSettings.load()
-                print("📱 Settings opened: tap=\(settings.isTapEnabled), reversed=\(settings.isFlickDirectionReversed)")
             }
         }
         .preferredColorScheme(.dark)
@@ -221,19 +273,45 @@ struct SettingsView: View {
         let generator = UIImpactFeedbackGenerator(style: .light)
         generator.impactOccurred()
         SharedSettings.save(settings)
-        print("📱 Settings saved: tap=\(settings.isTapEnabled), reversed=\(settings.isFlickDirectionReversed)")
+    }
+    
+    private var currentIconName: String {
+        switch settings.playbackMethod {
+        case .appleMusic: return "Apple Music Icon"
+        case .spotify: return "Spotify Icon"
+        case .shortcuts: return "Shortcuts Icon"
+        }
+    }
+    
+    private var currentColor: Color {
+        switch settings.playbackMethod {
+        case .appleMusic: return .red
+        case .spotify: return .green
+        case .shortcuts: return .pink
+        }
+    }
+    
+    private var currentLabel: String {
+        switch settings.playbackMethod {
+        case .appleMusic: return "Apple Music"
+        case .spotify: return "Spotify"
+        case .shortcuts: return "Other"
+        }
     }
 }
 
-// MARK: - Helper View Component
+// MARK: - Helper View Component (Updated for Custom Assets)
 struct SettingsRow<Content: View>: View {
     let icon: String
+    let isSystemIcon: Bool
     let color: Color
     let title: String
     let content: Content
     
-    init(icon: String, color: Color, title: String, @ViewBuilder content: () -> Content) {
+    // Default to true for backward compatibility
+    init(icon: String, isSystemIcon: Bool = true, color: Color, title: String, @ViewBuilder content: () -> Content) {
         self.icon = icon
+        self.isSystemIcon = isSystemIcon
         self.color = color
         self.title = title
         self.content = content()
@@ -246,9 +324,18 @@ struct SettingsRow<Content: View>: View {
                     .fill(color)
                     .frame(width: 28, height: 28)
                 
-                Image(systemName: icon)
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(.white)
+                if isSystemIcon {
+                    Image(systemName: icon)
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(.white)
+                } else {
+                    // Render Custom Asset
+                    Image(icon)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 18, height: 18)
+                        .foregroundStyle(.white)
+                }
             }
             
             Text(title)
