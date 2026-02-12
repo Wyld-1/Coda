@@ -16,8 +16,7 @@ I wanted something dead simple for controlling music while skiing, biking, or be
 The iPod Shuffle had the right idea with physical simplicity all those years ago, but I wanted to make it modern and take it a step further.
 
 ## Current status
-Gestures, UI, and app flow work. Taking media actions (skipping, pausing, playing, etc.) are in progress as the iOS app is being developed.
-After testing, I may add double flick detection and link to "Like song" or volume control.
+Flick is fully functional with Apple Music and Spotify! Gestures are not untuned, so expect them to be over/under responsive.
 
 ## Installation
 Want to test it yourself? Follow the steps below.
