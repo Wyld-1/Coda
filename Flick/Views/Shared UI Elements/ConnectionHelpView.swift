@@ -21,6 +21,10 @@ struct ConnectionHelpView: View {
         WCSession.default.isWatchAppInstalled
     }
     
+    private var isConnected: Bool {
+        isPaired && isInstalled
+    }
+    
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
@@ -64,7 +68,7 @@ struct ConnectionHelpView: View {
                                 title: "No Watch Paired",
                                 description: "iOS can't find a paired Apple Watch.",
                                 buttonTitle: "Pair Watch",
-                                url: "itms-watchs://" // Opens Watch app
+                                url: "itms-watchs://"
                             )
                         } else if !isInstalled {
                             DiagnosticCard(
@@ -72,16 +76,14 @@ struct ConnectionHelpView: View {
                                 title: "Flick Not Installed",
                                 description: "Flick is not installed on your Watch.",
                                 buttonTitle: "Install Flick",
-                                url: "itms-watchs://" // Opens Watch app
+                                url: "itms-watchs://"
                             )
-                        } else if isReachable {
-                            // Success Check with celebration
+                        } else {
                             HStack(spacing: 16) {
-                                Image(systemName: "checkmark.circle.fill")
+                                Image(systemName: "applewatch")
                                     .font(.title)
                                     .foregroundStyle(.green)
                                     .frame(width: 40)
-                                    .symbolEffect(.bounce, value: isReachable)
                                 
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text("Watch Connected")
@@ -90,6 +92,7 @@ struct ConnectionHelpView: View {
                                     Text("Flick should run normally.")
                                         .font(.subheadline)
                                         .foregroundStyle(.gray)
+                                        .fixedSize(horizontal: false, vertical: true)
                                 }
                                 Spacer()
                             }
@@ -101,100 +104,49 @@ struct ConnectionHelpView: View {
                                     .stroke(Color.green.opacity(0.3), lineWidth: 1)
                             )
                             .transition(.scale.combined(with: .opacity))
-                            
-                        } else {
-                            // Standard Check: Wake Screen
-                            HStack(spacing: 16) {
-                                Image(systemName: "zzz")
-                                    .font(.title)
-                                    .foregroundStyle(.orange)
-                                    .frame(width: 40)
-                                
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text("Wake Your Watch")
-                                        .font(.headline)
-                                        .foregroundStyle(.white)
-                                    Text("Flick sleeps to save battery. Raise your wrist to reconnect.")
-                                        .font(.subheadline)
-                                        .foregroundStyle(.gray)
-                                }
-                                Spacer()
-                            }
-                            .padding()
-                            .background(Color.orange.opacity(0.1))
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
                         }
                         
-                        // MARK: - Footer (Contact vs Troubleshooting)
-                        
-                        if isReachable {
-                            VStack(spacing: 24) {
-                                Divider().background(Color.gray.opacity(0.3))
-                                
-                                VStack(spacing: 8) {
-                                    Text("Still experiencing issues?")
-                                        .font(.headline)
-                                        .foregroundStyle(.white)
-                                    
-                                    Text("If Flick isn't behaving as expected, let us know.")
-                                        .font(.subheadline)
-                                        .foregroundStyle(.gray)
-                                        .multilineTextAlignment(.center)
-                                        .lineLimit(nil)
-                                        .fixedSize(horizontal: false, vertical: true)
-                                }
-                                
-                                Button(action: {
-                                    if let url = URL(string: "https://forms.gle/RSBVKFks8jatoQLS8") {
-                                        UIApplication.shared.open(url)
-                                    }
-                                }) {
-                                    Text("Report a Bug")
-                                        .font(.headline)
-                                        .fontWeight(.bold)
-                                        .frame(maxWidth: .infinity)
-                                        .foregroundStyle(.black)
-                                }
-                                .buttonStyle(VividGlassButtonStyle())
-                            }
-                        } else {
+                        // Always show troubleshooting
+                        VStack(spacing: 24) {
                             Divider().background(Color.gray.opacity(0.3))
                             
-                            Text("Troubleshooting")
-                                .font(.headline)
-                                .foregroundStyle(.white)
-                            
-                            VStack(alignment: .leading, spacing: 20) {
-                                HelpRow(number: "1", text: "Ensure Bluetooth is on and Airplane Mode is off.")
-                                HelpRow(number: "2", text: "Check that Flick is open on your Watch.")
-                                HelpRow(number: "3", text: "Quit and reopen the app on both devices.")
-                                HelpRow(number: "4", text: "Restart your iPhone.")
-                                
-                                Text("Still experiencing issues?")
+                            VStack(spacing: 8) {
+                                Text("Gestures not working?")
                                     .font(.headline)
                                     .foregroundStyle(.white)
-                                    .padding(.top, 15)
                                 
-                                Text("If Flick isn't behaving as expected, let us know.")
+                                Text("Try these steps:")
                                     .font(.subheadline)
                                     .foregroundStyle(.gray)
                                     .multilineTextAlignment(.center)
-                                    .lineLimit(nil)
-                                    .fixedSize(horizontal: false, vertical: true)
-                            
-                                Button(action: {
-                                    if let url = URL(string: "https://forms.gle/RSBVKFks8jatoQLS8") {
-                                        UIApplication.shared.open(url)
-                                    }
-                                }) {
-                                    Text("Report a Bug")
-                                        .font(.headline)
-                                        .fontWeight(.bold)
-                                        .frame(maxWidth: .infinity)
-                                        .foregroundStyle(.black)
-                                }
-                                .buttonStyle(VividGlassButtonStyle())
                             }
+                            
+                            VStack(alignment: .leading, spacing: 16) {
+                                HelpRow(number: "1", text: "Open Flick on your Watch to wake it up")
+                                HelpRow(number: "2", text: "Check Bluetooth is enabled on iPhone")
+                                HelpRow(number: "3", text: "Restart both iPhone and Watch if needed")
+                            }
+                            
+                            Divider().background(Color.gray.opacity(0.3))
+                            
+                            Text("Still not working? Let us know.")
+                                .font(.subheadline)
+                                .foregroundStyle(.gray)
+                                .multilineTextAlignment(.center)
+                                .padding(.top, 8)
+                            
+                            Button(action: {
+                                if let url = URL(string: "https://forms.gle/RSBVKFks8jatoQLS8") {
+                                    UIApplication.shared.open(url)
+                                }
+                            }) {
+                                Text("Report a Bug")
+                                    .font(.headline)
+                                    .fontWeight(.bold)
+                                    .frame(maxWidth: .infinity)
+                                    .foregroundStyle(.black)
+                            }
+                            .buttonStyle(VividGlassButtonStyle())
                         }
                     }
                 }
@@ -202,7 +154,6 @@ struct ConnectionHelpView: View {
             .padding(.horizontal, 24)
         }
         .preferredColorScheme(.dark)
-        // Auto-refresh when connection state changes
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("SettingsDidUpdate"))) { _ in
             isReachable = WatchConnectivityManager.shared.isReachable
         }
@@ -211,7 +162,6 @@ struct ConnectionHelpView: View {
                 isReachable = newValue
             }
             
-            // Celebrate if just connected
             if newValue {
                 let generator = UINotificationFeedbackGenerator()
                 generator.notificationOccurred(.success)

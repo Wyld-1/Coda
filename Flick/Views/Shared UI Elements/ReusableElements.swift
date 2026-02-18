@@ -88,8 +88,13 @@ struct GlassStatusDock: View {
     
     @ObservedObject private var connectivity = WatchConnectivityManager.shared
     
+    // Check proper connection status
+    private var isConnected: Bool {
+        WCSession.default.isPaired && WCSession.default.isWatchAppInstalled
+    }
+    
     // Local state to track changes for notification haptics
-    @State private var previousReachability = false
+    @State private var previousConnection = false
     
     var body: some View {
         Button(action: {
@@ -98,11 +103,11 @@ struct GlassStatusDock: View {
         }) {
             HStack(spacing: 10) {
                 Circle()
-                    .fill(connectivity.isReachable ? Color.green : Color.red)
+                    .fill(isConnected ? Color.green : Color.red)
                     .frame(width: 8, height: 8)
-                    .shadow(color: connectivity.isReachable ? .green.opacity(0.8) : .red.opacity(0.8), radius: 6)
+                    .shadow(color: isConnected ? .green.opacity(0.8) : .red.opacity(0.8), radius: 6)
                 
-                Text(connectivity.isReachable ? "WATCH CONNECTED" : "WATCH DISCONNECTED")
+                Text(isConnected ? "WATCH CONNECTED" : "WATCH DISCONNECTED")
                     .font(.caption)
                     .fontWeight(.bold)
                     .fontDesign(.monospaced)
@@ -141,19 +146,16 @@ struct GlassStatusDock: View {
             .shadow(color: .black.opacity(0.2), radius: 10, y: 5)
         }
         .buttonStyle(ScaleButtonStyle())
-        // Update the onChange to watch the observable property
-        .onChange(of: connectivity.isReachable) { old, new in
-            if new && !previousReachability {
-                // Connected
+        .onChange(of: isConnected) { old, new in
+            if new && !previousConnection {
                 HapticManager.shared.playSuccess()
-            } else if !new && previousReachability {
-                // Disconnected
+            } else if !new && previousConnection {
                 HapticManager.shared.playWarning()
             }
-            previousReachability = new
+            previousConnection = new
         }
         .onAppear {
-            previousReachability = connectivity.isReachable
+            previousConnection = isConnected
         }
     }
 }
